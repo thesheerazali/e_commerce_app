@@ -13,7 +13,7 @@ class _SearchNotifBarState extends State<SearchNotifBar> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30),
+      padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Row(
         children: [
           Expanded(

@@ -13,7 +13,7 @@ class _AdsContainerState extends State<AdsContainer> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30),
+      padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         shadowColor: Colors.black,
@@ -23,7 +23,7 @@ class _AdsContainerState extends State<AdsContainer> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             image: const DecorationImage(
-                image: AssetImage("assets/images/sale.webp"),
+                image: AssetImage("assets/images/adspic.jpeg"),
                 fit: BoxFit.cover),
           ),
         ),

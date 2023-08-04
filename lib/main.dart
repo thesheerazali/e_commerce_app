@@ -33,7 +33,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   static int currentPage = 0;
   List pages = [
-    const HomePage(),
+    const DashboardScreen(),
     const FavScreen(),
     const CartScreen(),
     const ProfileScreen(),
