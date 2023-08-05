@@ -5,20 +5,42 @@ import '../model/product_model.dart';
 class Data {
   static List<ProductModel> generateProducts() {
     return [
-      ProductModel(1, "assets/images/women4.jpg", "Black OutFit", "Men's Shoes",
-          "men shoes", 99.56, const Icon(Icons.favorite_border_outlined)),
       ProductModel(
-          2,
-          "assets/images/women2.jpg",
-          "Yellow OutFit",
-          "Men's Shoes",
-          "men shoes",
-          137.56,
-          const Icon(Icons.favorite_border_outlined)),
-      ProductModel(3, "assets/images/women3.jpg", "Cyan OutFit", "Men's Shoes",
-          "men shoes", 99.56, const Icon(Icons.favorite_border_outlined)),
-      ProductModel(4, "assets/images/women1.jpg", "Blue OutFit", "Men's Shoes",
-          "men shoes", 212.56, const Icon(Icons.favorite_border_outlined)),
+        1,
+        "assets/images/women4.jpg",
+        "Black OutFit",
+        "Men's Shoes",
+        "Outer",
+        99.56,
+        const Icon(Icons.favorite_border_outlined),
+      ),
+      ProductModel(
+        2,
+        "assets/images/women2.jpg",
+        "Yellow OutFit",
+        "Casual",
+        "men shoes",
+        137.56,
+        const Icon(Icons.favorite_border_outlined),
+      ),
+      ProductModel(
+        3,
+        "assets/images/women3.jpg",
+        "Cyan OutFit",
+        "Party",
+        "men shoes",
+        99.56,
+        const Icon(Icons.favorite_border_outlined),
+      ),
+      ProductModel(
+        4,
+        "assets/images/women1.jpg",
+        "Blue OutFit",
+        "Event",
+        "men shoes",
+        212.56,
+        const Icon(Icons.favorite_border_outlined),
+      ),
     ];
   }
 

@@ -72,7 +72,7 @@ class _MainPageState extends State<MainPage> {
                   });
                 },
                 icon: const Icon(CupertinoIcons.home)),
-            Spacer(),
+          const  Spacer(),
             IconButton(
               color: currentPage == 1 ? Colors.blue : Colors.black,
               onPressed: () {
@@ -82,7 +82,7 @@ class _MainPageState extends State<MainPage> {
               },
               icon: const Icon(CupertinoIcons.heart),
             ),
-            Spacer(),
+           const Spacer(),
             IconButton(
               color: currentPage == 2 ? Colors.blue : Colors.black,
               onPressed: () {
@@ -92,7 +92,7 @@ class _MainPageState extends State<MainPage> {
               },
               icon: const Icon(CupertinoIcons.cart),
             ),
-            Spacer(),
+         const   Spacer(),
             IconButton(
               color: currentPage == 3 ? Colors.blue : Colors.black,
               onPressed: () {

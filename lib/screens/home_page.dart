@@ -50,6 +50,7 @@ import 'package:flutter/material.dart';
 import '../Data/data.dart';
 import '../custom_widgets/categories_list_row.dart';
 import '../custom_widgets/home_search_motification_bar.dart';
+import 'home_detail_page.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -143,12 +144,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   padding: const EdgeInsets.all(5.0),
                   children: Data.generateProducts()
                       .map(
-                        (e) => InkWell(
+                        (e) => GestureDetector(
                           onTap: () {
                             FocusManager.instance.primaryFocus?.unfocus();
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      DetailPage(productdata: e),
+                                ));
                           },
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: size.width * .055),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
