@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 
 class ProductModel {
   int id;
@@ -6,6 +7,7 @@ class ProductModel {
   String type;
   String description;
   double price;
-
-  ProductModel(this.id,this.image,this.title,this.type,this.description,this.price);
+  Icon icon;
+  ProductModel(
+      this.id, this.image, this.title, this.type, this.description, this.price,this.icon);
 }

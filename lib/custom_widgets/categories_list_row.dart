@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/Data/data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -7,7 +8,8 @@ import '../screens/home_page.dart';
 import '../screens/profile_screen.dart';
 
 class CategoriesList extends StatefulWidget {
-  const CategoriesList({super.key});
+  const CategoriesList({super.key, required this.cateName});
+  final List cateName;
 
   @override
   State<CategoriesList> createState() => _CategoriesListState();
@@ -41,12 +43,15 @@ class _CategoriesListState extends State<CategoriesList> {
                 width: size.width * .35,
                 height: size.height * .065,
                 decoration: BoxDecoration(
+                  border: Border.all(
+                    color: const Color.fromARGB(255, 231, 228, 228),
+                  ),
                   borderRadius: BorderRadius.circular(10),
                   color: currentPage == 0 ? Colors.black : Colors.white,
                 ),
                 child: Center(
                     child: Text(
-                  "Recommended",
+                  widget.cateName[0],
                   style: TextStyle(
                     color: currentPage == 0 ? Colors.white : Colors.black,
                   ),
@@ -66,12 +71,15 @@ class _CategoriesListState extends State<CategoriesList> {
                 width: size.width * .35,
                 height: size.height * .065,
                 decoration: BoxDecoration(
+                  border: Border.all(
+                    color: const Color.fromARGB(255, 231, 228, 228),
+                  ),
                   borderRadius: BorderRadius.circular(10),
                   color: currentPage == 1 ? Colors.black : Colors.white,
                 ),
                 child: Center(
                     child: Text(
-                  "Recommended",
+                  widget.cateName[1],
                   style: TextStyle(
                     color: currentPage == 1 ? Colors.white : Colors.black,
                   ),
@@ -91,12 +99,15 @@ class _CategoriesListState extends State<CategoriesList> {
                 width: size.width * .35,
                 height: size.height * .065,
                 decoration: BoxDecoration(
+                  border: Border.all(
+                    color: const Color.fromARGB(255, 231, 228, 228),
+                  ),
                   borderRadius: BorderRadius.circular(10),
                   color: currentPage == 2 ? Colors.black : Colors.white,
                 ),
                 child: Center(
                     child: Text(
-                  "Recommended",
+                  widget.cateName[2],
                   style: TextStyle(
                     color: currentPage == 2 ? Colors.white : Colors.black,
                   ),
@@ -116,12 +127,15 @@ class _CategoriesListState extends State<CategoriesList> {
                 width: size.width * .35,
                 height: size.height * .065,
                 decoration: BoxDecoration(
+                  border: Border.all(
+                    color: const Color.fromARGB(255, 231, 228, 228),
+                  ),
                   borderRadius: BorderRadius.circular(10),
                   color: currentPage == 3 ? Colors.black : Colors.white,
                 ),
                 child: Center(
                     child: Text(
-                  "Recommended",
+                  widget.cateName[3],
                   style: TextStyle(
                     color: currentPage == 3 ? Colors.white : Colors.black,
                   ),
@@ -141,12 +155,15 @@ class _CategoriesListState extends State<CategoriesList> {
                 width: size.width * .35,
                 height: size.height * .065,
                 decoration: BoxDecoration(
+                  border: Border.all(
+                    color: const Color.fromARGB(255, 231, 228, 228),
+                  ),
                   borderRadius: BorderRadius.circular(10),
                   color: currentPage == 4 ? Colors.black : Colors.white,
                 ),
                 child: Center(
                     child: Text(
-                  "Recommended",
+                  widget.cateName[4],
                   style: TextStyle(
                     color: currentPage == 4 ? Colors.white : Colors.black,
                   ),
