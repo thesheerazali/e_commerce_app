@@ -45,6 +45,8 @@
 // }
 
 import 'package:e_commerce_app/custom_widgets/ads_container.dart';
+import 'package:e_commerce_app/model/product_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../Data/data.dart';
@@ -103,6 +105,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool isFav = false;
     Size size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -200,20 +203,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               fontSize: 18.0,
                                               fontWeight: FontWeight.bold)),
                                       Spacer(),
-                                      GestureDetector(
-                                        onTap: () {
-                                          print("sheeraz");
-                                        },
-                                        child: Container(
-                                          height: size.height * .05,
-                                          width: size.width * .1,
-                                          decoration: BoxDecoration(
-                                            // color: const Color.fromARGB(
-                                            //     255, 231, 228, 228),
-                                            borderRadius:
-                                                BorderRadius.circular(50),
-                                          ),
-                                          child: e.icon,
+                                      Container(
+                                        height: size.height * .05,
+                                        width: size.width * .11,
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromARGB(
+                                              255, 231, 228, 228),
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                        ),
+                                        child: IconButton(
+                                          icon: isFav == true
+                                              ? const Icon(Icons
+                                                  .favorite_border_outlined)
+                                              : const Icon(
+                                                  Icons.favorite_sharp,
+                                                  color: Colors.red,
+                                                ),
+                                          onPressed: () {
+                                            setState(() {
+                                              isFav = !isFav;
+                                            });
+                                          },
                                         ),
                                       )
                                     ],

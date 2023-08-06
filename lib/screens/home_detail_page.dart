@@ -165,7 +165,7 @@ class _DetailPageState extends State<DetailPage> {
                     SelectPicture(
                       productdata: widget.productdata,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     )
                   ],

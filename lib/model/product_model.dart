@@ -7,7 +7,7 @@ class ProductModel {
   String type;
   String description;
   double price;
-  Icon icon;
+  
   ProductModel(
-      this.id, this.image, this.title, this.type, this.description, this.price,this.icon);
+      this.id, this.image, this.title, this.type, this.description, this.price,);
 }
