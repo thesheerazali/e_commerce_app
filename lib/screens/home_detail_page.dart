@@ -21,6 +21,7 @@ class _DetailPageState extends State<DetailPage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      bottomNavigationBar: detailPageBottomNavigationBar(),
       backgroundColor: Colors.white,
       body: SafeArea(
           child: Padding(
@@ -152,7 +153,7 @@ class _DetailPageState extends State<DetailPage> {
                             const TextStyle(fontWeight: FontWeight.bold),
                         style:
                             const TextStyle(color: Colors.grey, fontSize: 18),
-                        colorClickableText: Colors.pink,
+                        colorClickableText: Colors.black,
                         trimMode: TrimMode.Line,
                         trimCollapsedText: '...Show more',
                         trimExpandedText: ' show less',
@@ -164,13 +165,62 @@ class _DetailPageState extends State<DetailPage> {
                     SelectPicture(
                       productdata: widget.productdata,
                     ),
+                    SizedBox(
+                      height: 20,
+                    )
                   ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      )),
+    );
+  }
+
+  Widget detailPageBottomNavigationBar() {
+    Size size = MediaQuery.of(context).size;
+    return BottomAppBar(
+      height: size.height * .08,
+      color: Colors.white,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: size.width * .075),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: size.width * .02),
+              child: Wrap(
+                crossAxisAlignment: WrapCrossAlignment.end,
+                children: [
+                  const Text(
+                    "\$",
+                    style: TextStyle(color: Colors.red, fontSize: 18),
+                  ),
+                  Text(
+                    widget.productdata.price.toString(),
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: size.height * .060,
+              width: size.width * .35,
+              child: ElevatedButton(
+                onPressed: () {},
+                style: const ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(Colors.black),
+                ),
+                child: const Text(
+                  "+ Add to Cart",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ),
             )
           ],
         ),
-      )),
+      ),
     );
   }
 }
