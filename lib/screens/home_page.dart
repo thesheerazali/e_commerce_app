@@ -139,7 +139,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               Expanded(
                 child: GridView.count(
                   shrinkWrap: true,
-                  childAspectRatio: 0.65,
+                  childAspectRatio: size.aspectRatio / .7,
                   crossAxisCount: 2,
                   padding: const EdgeInsets.all(5.0),
                   children: Data.generateProducts()

@@ -41,14 +41,15 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       bottomNavigationBar: Column(mainAxisSize: MainAxisSize.min, children: [
         TabIndicators(
+          size: size,
           activeIdx: currentPage,
           activeColor: Theme.of(context).primaryColor,
           numTabs: 4,
-          padding: 25,
           height: 4,
         ),
         myBottomAppBar(),
@@ -58,50 +59,51 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget myBottomAppBar() {
+    Size size = MediaQuery.of(context).size;
     return BottomAppBar(
       color: Colors.white,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: size.width * .085),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
-                color: currentPage == 0 ? Colors.blue : Colors.black,
+              color: currentPage == 0 ? Colors.blue : Colors.black,
+              onPressed: () {
+                setState(() {
+                  currentPage = 0;
+                });
+              },
+              icon: const Icon(CupertinoIcons.home),
+              iconSize: size.height * .03,
+            ),
+            IconButton(
+                color: currentPage == 1 ? Colors.blue : Colors.black,
                 onPressed: () {
                   setState(() {
-                    currentPage = 0;
+                    currentPage = 1;
                   });
                 },
-                icon: const Icon(CupertinoIcons.home)),
-          const  Spacer(),
+                icon: const Icon(CupertinoIcons.heart),
+                iconSize: size.height * .03),
             IconButton(
-              color: currentPage == 1 ? Colors.blue : Colors.black,
-              onPressed: () {
-                setState(() {
-                  currentPage = 1;
-                });
-              },
-              icon: const Icon(CupertinoIcons.heart),
-            ),
-           const Spacer(),
+                color: currentPage == 2 ? Colors.blue : Colors.black,
+                onPressed: () {
+                  setState(() {
+                    currentPage = 2;
+                  });
+                },
+                icon: const Icon(CupertinoIcons.cart),
+                iconSize: size.height * .03),
             IconButton(
-              color: currentPage == 2 ? Colors.blue : Colors.black,
-              onPressed: () {
-                setState(() {
-                  currentPage = 2;
-                });
-              },
-              icon: const Icon(CupertinoIcons.cart),
-            ),
-         const   Spacer(),
-            IconButton(
-              color: currentPage == 3 ? Colors.blue : Colors.black,
-              onPressed: () {
-                setState(() {
-                  currentPage = 3;
-                });
-              },
-              icon: const Icon(CupertinoIcons.person),
-            ),
+                color: currentPage == 3 ? Colors.blue : Colors.black,
+                onPressed: () {
+                  setState(() {
+                    currentPage = 3;
+                  });
+                },
+                icon: const Icon(CupertinoIcons.person),
+                iconSize: size.height * .03),
           ],
         ),
       ),
