@@ -19,6 +19,7 @@ class CategorieTabBar extends StatefulWidget {
 class _CategorieTabBarState extends State<CategorieTabBar>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  PageController? pageController;
 
   @override
   void initState() {
@@ -153,7 +154,7 @@ class _CategorieTabBarState extends State<CategorieTabBar>
   Widget getGridVeiwOfCategories(
       {required var size, required List<ProductModel> data}) {
     final provider = Provider.of<FavProvider>(context);
-    bool isFav = false;
+
     return GridView.builder(
       itemCount: data.length,
 
@@ -237,29 +238,26 @@ class _CategorieTabBarState extends State<CategorieTabBar>
                               fontWeight: FontWeight.bold)),
                       Spacer(),
                       Container(
-                          height: size.height * .05,
-                          width: size.width * .11,
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 231, 228, 228),
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                provider.fav(data[index], index);
-
-                                // print(provider.isExit(data, index));
-                              });
-                            },
-                            icon: provider.isExit(data, index)
-                                ? const Icon(
-                                    Icons.favorite_sharp,
-                                    color: Colors.red,
-                                  )
-                                : const Icon(
-                                    Icons.favorite_border_outlined,
-                                  ),
-                          )),
+                        height: size.height * .05,
+                        width: size.width * .11,
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 231, 228, 228),
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        child: IconButton(
+                          onPressed: () {
+                            provider.fav(data[index], index);
+                          },
+                          icon: provider.isExit(data[index], )
+                              ? const Icon(
+                                  Icons.favorite_sharp,
+                                  color: Colors.red,
+                                )
+                              : const Icon(
+                                  Icons.favorite_border_outlined,
+                                ),
+                        ),
+                      ),
                     ],
                   ),
                 )
