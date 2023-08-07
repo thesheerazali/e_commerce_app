@@ -5,6 +5,7 @@ import 'package:e_commerce_app/screens/home_page.dart';
 import 'package:e_commerce_app/screens/profile_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
 
 import 'custom_widgets/tab_indicator.dart';
@@ -49,16 +50,38 @@ class _MainPageState extends State<MainPage> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      bottomNavigationBar: Column(mainAxisSize: MainAxisSize.min, children: [
-        TabIndicators(
-          size: size,
-          activeIdx: currentPage,
-          activeColor: Theme.of(context).primaryColor,
-          numTabs: 4,
-          height: 4,
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 8,
         ),
-        myBottomAppBar(),
-      ]),
+        child: GNav(
+          gap: 8,
+          activeColor: Colors.black,
+          // tabBackgroundColor: Colors.blue,
+          onTabChange: (value) {
+            currentPage = value;
+            setState(() {});
+          },
+          tabs: const [
+            GButton(
+              icon: CupertinoIcons.home,
+              text: "Home",
+            ),
+            GButton(
+              icon: CupertinoIcons.heart,
+              text: "Favorite",
+            ),
+            GButton(
+              icon: CupertinoIcons.cart,
+              text: "Cart",
+            ),
+            GButton(
+              icon: CupertinoIcons.person,
+              text: "Profile",
+            )
+          ],
+        ),
+      ),
       body: pages[currentPage],
     );
   }
@@ -115,7 +138,6 @@ class _MainPageState extends State<MainPage> {
     );
   }
 }
-
 
 // InkWell(
 //               onTap: () {

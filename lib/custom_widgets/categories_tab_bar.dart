@@ -1,6 +1,6 @@
 import 'package:e_commerce_app/model/product_model.dart';
 import 'package:e_commerce_app/provider/fav_provider.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -236,7 +236,7 @@ class _CategorieTabBarState extends State<CategorieTabBar>
                               color: Colors.red,
                               fontSize: 18.0,
                               fontWeight: FontWeight.bold)),
-                      Spacer(),
+                     const Spacer(),
                       Container(
                         height: size.height * .05,
                         width: size.width * .11,

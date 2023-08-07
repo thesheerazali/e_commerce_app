@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 
 class ProductsVeiw extends StatefulWidget {
@@ -24,7 +24,7 @@ class _ProductsVeiwState extends State<ProductsVeiw> {
     return Expanded(
       child: GridView.builder(
         shrinkWrap: true,
-        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
         itemCount: 6,
         gridDelegate:
             const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),

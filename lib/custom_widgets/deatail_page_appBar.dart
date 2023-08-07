@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DetailPageAppBar extends StatefulWidget {
@@ -37,7 +36,7 @@ class _DetailPageAppBarState extends State<DetailPageAppBar> {
           child: Center(
               child: IconButton(
             onPressed: () {},
-            icon: Icon(Icons.favorite_border_outlined),
+            icon: const Icon(Icons.favorite_border_outlined),
           )),
         ),
       ],

@@ -195,7 +195,7 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                   Text(
                     widget.productdata.price.toString(),
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),

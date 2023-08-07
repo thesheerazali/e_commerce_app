@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,15 +27,15 @@ class _FavScreenState extends State<FavScreen> {
           return ListTile(
               shape: RoundedRectangleBorder(
                 //<-- SEE HERE
-                side: BorderSide(width: 2),
+                side: const BorderSide(width: 2),
                 borderRadius: BorderRadius.circular(20),
               ),
               leading: CircleAvatar(
-                backgroundColor: Color(0xff6ae792),
+                backgroundColor: const Color(0xff6ae792),
                 backgroundImage: data[index].image.image,
               ),
               title: Text(data[index].title),
-              subtitle: Text('Item description'),
+              subtitle: const Text('Item description'),
               trailing: IconButton(
                 onPressed: () {
                   provider.fav(data[index], index);
