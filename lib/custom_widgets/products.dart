@@ -20,7 +20,7 @@ class _ProductsVeiwState extends State<ProductsVeiw> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
+   
     return Expanded(
       child: GridView.builder(
         shrinkWrap: true,

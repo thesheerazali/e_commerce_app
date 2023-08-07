@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../Data/data.dart';
-import '../custom_widgets/categories_list_row.dart';
 import '../custom_widgets/deatail_page_appBar.dart';
 import '../custom_widgets/detail_page_pictureVeiw.dart';
 import '../model/product_model.dart';
@@ -43,7 +41,7 @@ class _DetailPageState extends State<DetailPage> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Image(
-                  image:widget.productdata.image.image,
+                  image: widget.productdata.image.image,
                   fit: BoxFit.fill,
                   height: size.height * 0.40,
                   width: double.infinity,
@@ -97,10 +95,10 @@ class _DetailPageState extends State<DetailPage> {
                               decoration: BoxDecoration(
                                   color: Colors.red,
                                   borderRadius: BorderRadius.circular(4)),
-                              child: const Center(
+                              child: Center(
                                 child: Text(
-                                  "Save 20%",
-                                  style: TextStyle(
+                                  "Save ${widget.productdata.sale}%",
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16,
                                       color: Colors.white),

@@ -9,7 +9,7 @@ class DetailPageAppBar extends StatefulWidget {
 }
 
 class _DetailPageAppBarState extends State<DetailPageAppBar> {
-  final TextEditingController _textEditingController = TextEditingController();
+  
   @override
   Widget build(BuildContext context) {
     return Row(
