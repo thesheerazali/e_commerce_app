@@ -1,9 +1,9 @@
-import 'package:e_commerce_app/custom_widgets/ads_container.dart';
+import 'package:e_commerce_app/screens/home/components/ads_container.dart';
 
 import 'package:flutter/material.dart';
 
-import '../custom_widgets/categories_tab_bar.dart';
-import '../custom_widgets/home_search_motification_bar.dart';
+import 'components/categories_tab_bar.dart';
+import 'components/home_search_motification_bar.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);

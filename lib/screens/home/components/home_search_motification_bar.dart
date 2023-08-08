@@ -1,5 +1,6 @@
-
 import 'package:flutter/material.dart';
+
+import '../../fav_screen.dart';
 
 class SearchNotifBar extends StatefulWidget {
   const SearchNotifBar({super.key});
@@ -47,8 +48,17 @@ class _SearchNotifBarState extends State<SearchNotifBar> {
                 borderRadius: BorderRadius.circular(10)),
             child: Center(
                 child: IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.notification_add_outlined),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FavScreen(),
+                    ));
+              },
+              icon: Icon(
+                Icons.favorite_sharp,
+                color: Colors.red,
+              ),
             )),
           ),
         ],

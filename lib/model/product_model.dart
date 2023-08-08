@@ -19,4 +19,6 @@ class ProductModel {
     required this.sale,
     required this.price,
   });
+
+  void add(ProductModel productModels) {}
 }

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +14,7 @@ class _FavScreenState extends State<FavScreen> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<FavProvider>(context);
-    final data = provider.productModels;
+    final data = provider.productModelsget;
 
     return Scaffold(
       appBar: AppBar(
@@ -25,6 +24,13 @@ class _FavScreenState extends State<FavScreen> {
         itemCount: data.length,
         itemBuilder: (context, index) {
           return ListTile(
+              onTap: () {
+                if (provider.productModels.contains(data[index])) {
+                  provider.removeFav(data[index], index);
+                } else {
+                  provider.addFav(data[index], index);
+                }
+              },
               shape: RoundedRectangleBorder(
                 //<-- SEE HERE
                 side: const BorderSide(width: 2),
@@ -36,20 +42,10 @@ class _FavScreenState extends State<FavScreen> {
               ),
               title: Text(data[index].title),
               subtitle: const Text('Item description'),
-              trailing: IconButton(
-                onPressed: () {
-                  provider.fav(data[index], index);
-
-                  // print(provider.isExit(data, index));
-                },
-                icon: provider.isExit(data[index],)
-                    ? const Icon(
-                        Icons.remove_circle,
-                        color: Colors.red,
-                      )
-                    : const Icon(
-                        Icons.favorite_border_outlined,
-                      ),
+              trailing: Icon(
+                provider.productModels.contains(data[index])
+                    ? Icons.remove_circle
+                    : Icons.favorite_border_outlined,
               ));
         },
       ),

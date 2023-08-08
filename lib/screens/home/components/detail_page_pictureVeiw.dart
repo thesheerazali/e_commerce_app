@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../model/product_model.dart';
+import '../../../model/product_model.dart';
 
 class SelectPicture extends StatefulWidget {
   const SelectPicture({super.key, required this.productdata});

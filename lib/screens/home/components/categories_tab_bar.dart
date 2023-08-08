@@ -4,8 +4,8 @@ import 'package:e_commerce_app/provider/fav_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../Data/data.dart';
-import '../screens/home_detail_page.dart';
+import '../../../Data/data.dart';
+import '../home_detail_page.dart';
 
 class CategorieTabBar extends StatefulWidget {
   const CategorieTabBar({
@@ -129,6 +129,9 @@ class _CategorieTabBarState extends State<CategorieTabBar>
                     height: size.height * .065,
                     child: Center(child: Text(cateName[5]))),
               ]),
+          SizedBox(
+            height: size.height * .015,
+          ),
           Expanded(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: size.width * .065),
@@ -153,8 +156,6 @@ class _CategorieTabBarState extends State<CategorieTabBar>
 
   Widget getGridVeiwOfCategories(
       {required var size, required List<ProductModel> data}) {
-    final provider = Provider.of<FavProvider>(context);
-
     return GridView.builder(
       itemCount: data.length,
 
@@ -236,26 +237,33 @@ class _CategorieTabBarState extends State<CategorieTabBar>
                               color: Colors.red,
                               fontSize: 18.0,
                               fontWeight: FontWeight.bold)),
-                     const Spacer(),
-                      Container(
-                        height: size.height * .05,
-                        width: size.width * .11,
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 231, 228, 228),
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                        child: IconButton(
-                          onPressed: () {
-                            provider.fav(data[index], index);
-                          },
-                          icon: provider.isExit(data[index], )
-                              ? const Icon(
-                                  Icons.favorite_sharp,
-                                  color: Colors.red,
-                                )
-                              : const Icon(
-                                  Icons.favorite_border_outlined,
-                                ),
+                      const Spacer(),
+                      Consumer<FavProvider>(
+                        builder: (context, provider, child) => Container(
+                          height: size.height * .05,
+                          width: size.width * .11,
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 231, 228, 228),
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: IconButton(
+                            onPressed: () {
+                              if (provider.productModels
+                                  .contains(data[index])) {
+                                provider.removeFav(data[index], index);
+                              } else {
+                                provider.addFav(data[index], index);
+                              }
+                            },
+                            icon: provider.productModels.contains(data[index])
+                                ? const Icon(
+                                    Icons.favorite_sharp,
+                                    color: Colors.red,
+                                  )
+                                : const Icon(
+                                    Icons.favorite_border_outlined,
+                                  ),
+                          ),
                         ),
                       ),
                     ],

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../custom_widgets/deatail_page_appBar.dart';
-import '../custom_widgets/detail_page_pictureVeiw.dart';
-import '../model/product_model.dart';
+import 'components/deatail_page_appBar.dart';
+import 'components/detail_page_pictureVeiw.dart';
+import '../../model/product_model.dart';
 import 'package:readmore/readmore.dart';
 
 class DetailPage extends StatefulWidget {
