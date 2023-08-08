@@ -1,7 +1,9 @@
+import 'package:e_commerce_app/model/product_model.dart';
 import 'package:e_commerce_app/screens/home/components/ads_container.dart';
 
 import 'package:flutter/material.dart';
 
+import '../../Data/data.dart';
 import 'components/categories_tab_bar.dart';
 import 'components/home_search_motification_bar.dart';
 

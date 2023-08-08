@@ -5,27 +5,20 @@ class FavProvider extends ChangeNotifier {
   final List<ProductModel> productModels = [];
   List<ProductModel> get productModelsget => productModels;
 
-  void addFav(ProductModel productModelsget, int index) {
-    productModels.add(productModelsget);
+  void addFav(ProductModel data, int index) {
+    // productModels.add(productModelsget);
+
+    if (productModels.contains(data)) {
+      productModels.remove(data);
+    } else {
+      productModels.add(data);
+    }
 
     notifyListeners();
   }
 
-  void removeFav(ProductModel productModelsget, int index) {
-    productModels.remove(productModelsget);
-
-    notifyListeners();
-  }
-
-  // bool isExit(
-  //   ProductModel productMOdel1,
-  // ) {
-  //   final isExits = _productModels.contains(productMOdel1);
+ 
 
   //   return isExits;
   // }
-
- 
-
- 
 }

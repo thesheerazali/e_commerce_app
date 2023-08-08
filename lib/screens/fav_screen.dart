@@ -25,11 +25,7 @@ class _FavScreenState extends State<FavScreen> {
         itemBuilder: (context, index) {
           return ListTile(
               onTap: () {
-                if (provider.productModels.contains(data[index])) {
-                  provider.removeFav(data[index], index);
-                } else {
-                  provider.addFav(data[index], index);
-                }
+                provider.addFav(data[index], index);
               },
               shape: RoundedRectangleBorder(
                 //<-- SEE HERE

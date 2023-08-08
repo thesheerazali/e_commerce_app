@@ -248,12 +248,7 @@ class _CategorieTabBarState extends State<CategorieTabBar>
                           ),
                           child: IconButton(
                             onPressed: () {
-                              if (provider.productModels
-                                  .contains(data[index])) {
-                                provider.removeFav(data[index], index);
-                              } else {
-                                provider.addFav(data[index], index);
-                              }
+                              provider.addFav(data[index], index);
                             },
                             icon: provider.productModels.contains(data[index])
                                 ? const Icon(
