@@ -6,8 +6,8 @@ class FavProvider extends ChangeNotifier {
   List<ProductModel> get productModelsget => productModels;
 
   bool isFav = false;
-
-  int index = 0;
+  
+ 
 
   void addFav(
     ProductModel data,
@@ -16,11 +16,9 @@ class FavProvider extends ChangeNotifier {
 
     if (productModels.contains(data)) {
       productModels.remove(data);
-
-      false;
+     isFav = false;
     } else {
       productModels.add(data);
-      index + 1;
       isFav = true;
     }
 

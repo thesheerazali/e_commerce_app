@@ -30,7 +30,7 @@ class _SelectPictureState extends State<SelectPicture> {
               height: size.height * .1,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: widget.productdata.image.image,
+                  image:  AssetImage(widget.productdata.image),
                     fit: BoxFit.fill),
                 border: currentPictureSelected == 0
                     ? Border.all(color: Colors.black, width: 2)
@@ -50,7 +50,7 @@ class _SelectPictureState extends State<SelectPicture> {
               height: size.height * .1,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: widget.productdata.image.image,
+                    image:  AssetImage(widget.productdata.image),
                     fit: BoxFit.fill),
                 border: currentPictureSelected == 1
                     ? Border.all(color: Colors.black, width: 2)
@@ -70,7 +70,7 @@ class _SelectPictureState extends State<SelectPicture> {
               height: size.height * .1,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: widget.productdata.image.image,
+                    image:  AssetImage(widget.productdata.image),
                     fit: BoxFit.fill),
                 border: currentPictureSelected == 2
                     ? Border.all(color: Colors.black, width: 2)
@@ -90,7 +90,7 @@ class _SelectPictureState extends State<SelectPicture> {
               height: size.height * .1,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: widget.productdata.image.image,
+                    image:  AssetImage(widget.productdata.image),
                     fit: BoxFit.fill),
                 border: currentPictureSelected == 3
                     ? Border.all(color: Colors.black, width: 2)

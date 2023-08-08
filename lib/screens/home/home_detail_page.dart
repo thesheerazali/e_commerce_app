@@ -42,7 +42,7 @@ class _DetailPageState extends State<DetailPage> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Image(
-                  image: widget.productdata.image.image,
+                  image: AssetImage(widget.productdata.image),
                   fit: BoxFit.fill,
                   height: size.height * 0.40,
                   width: double.infinity,

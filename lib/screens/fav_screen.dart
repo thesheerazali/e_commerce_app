@@ -1,5 +1,5 @@
 import 'package:e_commerce_app/floor_database/database.dart';
-import 'package:e_commerce_app/floor_database/entity.dart';
+import 'package:e_commerce_app/floor_database/entity/cart_entity.dart';
 import 'package:e_commerce_app/model/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +34,7 @@ class _FavScreenState extends State<FavScreen> {
               ),
               leading: CircleAvatar(
                 backgroundColor: const Color(0xff6ae792),
-                backgroundImage: data[index].image.image,
+                backgroundImage: AssetImage(data[index].image),
               ),
               title: Text(data[index].title),
               subtitle: const Text('Item description'),

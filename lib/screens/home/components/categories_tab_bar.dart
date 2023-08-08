@@ -189,7 +189,7 @@ class _CategorieTabBarState extends State<CategorieTabBar>
                           Image(
                             height: size.height * .24,
                             width: double.infinity,
-                            image: data[index].image.image,
+                            image: AssetImage(data[index].image),
                             fit: BoxFit.fill,
                           ),
                           Container(

@@ -15,8 +15,7 @@ class DetailPageAppBar extends StatefulWidget {
 }
 
 class _DetailPageAppBarState extends State<DetailPageAppBar> {
-  List<ProductModel> recommendedProductData =
-      Data.generateProductsRecommended();
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<FavProvider>(context);
@@ -48,13 +47,13 @@ class _DetailPageAppBarState extends State<DetailPageAppBar> {
             child: Center(
                 child: IconButton(
               onPressed: () {
-                value.isFav = false;
+              //  value.addFav(data[])
               },
               icon: value.productModelsget.isEmpty
-                  ? Icon(
+                  ? const Icon(
                       Icons.favorite_sharp,
                     )
-                  : Icon(
+                  : const Icon(
                       Icons.favorite_sharp,
                       color: Colors.red,
                     ),

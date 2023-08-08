@@ -1,5 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter/material.dart';
+
 
 import '../model/product_model.dart';
 
@@ -8,7 +8,7 @@ class Data {
     return [
       ProductModel(
           id: 1,
-          image: const Image(image: AssetImage("assets/images/women4.jpg")),
+          image: "assets/images/women4.jpg",
           title: "Black OutFit",
           type: "Outer",
           description:
@@ -17,7 +17,7 @@ class Data {
           sale: 20),
       ProductModel(
           id: 2,
-          image: const Image(image: AssetImage("assets/images/women2.jpg")),
+          image: "assets/images/women2.jpg",
           title: "Yellow OutFit",
           type: "Casual",
           description:
@@ -26,7 +26,7 @@ class Data {
           sale: 24),
       ProductModel(
           id: 3,
-          image: const Image(image: AssetImage("assets/images/women3.jpg")),
+          image: "assets/images/women3.jpg",
           title: "Cyan OutFit",
           type: "Party",
           description:
@@ -35,7 +35,7 @@ class Data {
           sale: 40),
       ProductModel(
           id: 4,
-          image: const Image(image: AssetImage("assets/images/women1.jpg")),
+          image:"assets/images/women1.jpg",
           title: "Blue OutFit",
           type: "Event",
           description:
@@ -49,7 +49,7 @@ class Data {
     return [
       ProductModel(
           id: 1,
-          image: const Image(image: AssetImage("assets/images/shoes1.jpg")),
+          image: "assets/images/shoes1.jpg",
           title: "Black Shoes",
           type: "Event",
           description:
@@ -58,9 +58,8 @@ class Data {
           sale: 25),
       ProductModel(
           id: 2,
-          image: const Image(
-            image: AssetImage("assets/images/shoes5.jpg"),
-          ),
+          image:"assets/images/shoes5.jpg",
+          
           title: "sneaker",
           type: "Casual",
           description:
@@ -69,7 +68,7 @@ class Data {
           sale: 50),
       ProductModel(
           id: 3,
-          image: const Image(image: AssetImage("assets/images/shoes3.jpg")),
+          image:"assets/images/shoes3.jpg",
           title: "White Shoe",
           type: "Party",
           description:
@@ -78,9 +77,7 @@ class Data {
           sale: 60),
       ProductModel(
           id: 4,
-          image: const Image(
-            image: AssetImage("assets/images/shoes4.jpg"),
-          ),
+          image: "assets/images/shoes4.jpg",
           title: "Jordan",
           type: "Event",
           description:
