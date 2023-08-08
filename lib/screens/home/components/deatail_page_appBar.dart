@@ -1,16 +1,27 @@
+import 'package:e_commerce_app/model/product_model.dart';
+import 'package:e_commerce_app/provider/fav_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../Data/data.dart';
 
 class DetailPageAppBar extends StatefulWidget {
-  const DetailPageAppBar({super.key});
+  const DetailPageAppBar({
+    super.key,
+  });
 
   @override
   State<DetailPageAppBar> createState() => _DetailPageAppBarState();
 }
 
 class _DetailPageAppBarState extends State<DetailPageAppBar> {
-  
+  List<ProductModel> recommendedProductData =
+      Data.generateProductsRecommended();
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<FavProvider>(context);
+    final data = provider.productModelsget;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -29,15 +40,26 @@ class _DetailPageAppBarState extends State<DetailPageAppBar> {
           "Product Detail",
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
-        Container(
-          decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 231, 228, 228),
-              borderRadius: BorderRadius.circular(10)),
-          child: Center(
-              child: IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.favorite_border_outlined),
-          )),
+        Consumer<FavProvider>(
+          builder: (context, value, child) => Container(
+            decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 231, 228, 228),
+                borderRadius: BorderRadius.circular(10)),
+            child: Center(
+                child: IconButton(
+              onPressed: () {
+                value.isFav = false;
+              },
+              icon: value.productModelsget.isEmpty
+                  ? Icon(
+                      Icons.favorite_sharp,
+                    )
+                  : Icon(
+                      Icons.favorite_sharp,
+                      color: Colors.red,
+                    ),
+            )),
+          ),
         ),
       ],
     );

@@ -27,18 +27,6 @@ class _FavScreenState extends State<FavScreen> {
         itemCount: data.length,
         itemBuilder: (context, index) {
           return ListTile(
-              onTap: () async {
-                provider.addFav(data[index], index);
-
-                final database = await $FloorProductDatabase
-                    .databaseBuilder('product_database.db')
-                    .build();
-                final Product product = Product(1, "Title", "Des");
-                print('-------------------------------------------------');
-                database.productDao.insertProduct(product);
-                print(
-                    '-------------------------------------------------After insertion');
-              },
               shape: RoundedRectangleBorder(
                 //<-- SEE HERE
                 side: const BorderSide(width: 2),
@@ -50,11 +38,33 @@ class _FavScreenState extends State<FavScreen> {
               ),
               title: Text(data[index].title),
               subtitle: const Text('Item description'),
-              trailing: Icon(
-                provider.productModels.contains(data[index])
-                    ? Icons.remove_circle
-                    : Icons.favorite_border_outlined,
-              ));
+              trailing: IconButton(
+                  onPressed: () async {
+                    provider.addFav(
+                      data[index],
+                    );
+
+                    if (provider.productModelsget.isNotEmpty) {
+                      provider.isFav = true;
+                    } else {
+                      provider.isFav = false;
+                    }
+
+                    // final database = await $FloorProductDatabase
+                    //     .databaseBuilder('product_database.db')
+                    //     .build();
+
+                    // final personDao = database.productDao;
+                    // final Product product = Product(5, "Title", "Des");
+
+                    // final result =  personDao.findPersonById(5);
+
+                    // print('-------------------------------------------------');
+                    // database.productDao.insertProduct(product);
+                    // print(
+                    //     '-------------------------------------------------After insertion');
+                  },
+                  icon: Icon(Icons.remove_circle)));
         },
       ),
     );

@@ -61,10 +61,14 @@ class _SearchNotifBarState extends State<SearchNotifBar> {
                           builder: (context) => FavScreen(),
                         ));
                   },
-                  icon: Icon(
-                    Icons.favorite_sharp,
-                    color: Colors.red,
-                  ),
+                  icon: value.isFav
+                      ? Icon(
+                          Icons.favorite_sharp,
+                          color: Colors.red,
+                        )
+                      : Icon(
+                          Icons.favorite_sharp,
+                        ),
                 ),
               ),
             ),

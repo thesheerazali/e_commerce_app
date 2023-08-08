@@ -122,4 +122,10 @@ class _$ProductDao extends ProductDao {
   Future<void> insertProduct(Product product) async {
     await _productInsertionAdapter.insert(product, OnConflictStrategy.abort);
   }
+  
+  @override
+  Stream<Product> findPersonById(int id) {
+    // TODO: implement findPersonById
+    throw UnimplementedError();
+  }
 }

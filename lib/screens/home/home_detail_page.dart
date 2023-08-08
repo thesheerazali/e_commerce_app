@@ -1,3 +1,4 @@
+import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
 
 import 'components/deatail_page_appBar.dart';
@@ -30,7 +31,7 @@ class _DetailPageState extends State<DetailPage> {
             const SizedBox(
               height: 30,
             ),
-            const DetailPageAppBar(),
+             DetailPageAppBar(),
             const SizedBox(
               height: 20,
             ),
