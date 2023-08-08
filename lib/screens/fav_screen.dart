@@ -1,3 +1,6 @@
+import 'package:e_commerce_app/floor_database/database.dart';
+import 'package:e_commerce_app/floor_database/entity.dart';
+import 'package:e_commerce_app/model/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,8 +27,17 @@ class _FavScreenState extends State<FavScreen> {
         itemCount: data.length,
         itemBuilder: (context, index) {
           return ListTile(
-              onTap: () {
+              onTap: () async {
                 provider.addFav(data[index], index);
+
+                final database = await $FloorProductDatabase
+                    .databaseBuilder('product_database.db')
+                    .build();
+                final Product product = Product(1, "Title", "Des");
+                print('-------------------------------------------------');
+                database.productDao.insertProduct(product);
+                print(
+                    '-------------------------------------------------After insertion');
               },
               shape: RoundedRectangleBorder(
                 //<-- SEE HERE

@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
 
-import 'custom_widgets/tab_indicator.dart';
+
 
 void main() {
   runApp(const MyApp());

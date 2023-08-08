@@ -19,6 +19,11 @@ class FavProvider extends ChangeNotifier {
 
  
 
-  //   return isExits;
-  // }
+  bool isExit(
+    ProductModel productMOdel1,
+  ) {
+    final isExits = productModels.contains(productMOdel1);
+
+    return isExits;
+  }
 }
