@@ -1,6 +1,7 @@
-import 'package:floor/floor.dart';
+import 'package:e_commerce_app/floor_database/database.dart';
 import 'package:flutter/material.dart';
 
+import '../../const/const.dart';
 import 'components/deatail_page_appBar.dart';
 import 'components/detail_page_pictureVeiw.dart';
 import '../../model/product_model.dart';
@@ -31,7 +32,7 @@ class _DetailPageState extends State<DetailPage> {
             const SizedBox(
               height: 30,
             ),
-             DetailPageAppBar(),
+            const DetailPageAppBar(),
             const SizedBox(
               height: 20,
             ),
@@ -52,6 +53,9 @@ class _DetailPageState extends State<DetailPage> {
             const SizedBox(
               height: 10,
             ),
+
+            //All description
+
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -196,7 +200,8 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                   Text(
                     widget.productdata.price.toString(),
-                    style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -205,7 +210,15 @@ class _DetailPageState extends State<DetailPage> {
               height: size.height * .060,
               width: size.width * .35,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  final database = await $FloorAppDatabase
+                      .databaseBuilder('product_database.db')
+                      .build();
+                  final cartDao2 = database.cartDao;
+                  var cartProducts =
+                      cartDao2.getCartItemsbyUId(UID, widget.productdata.id);
+                      
+                },
                 style: const ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(Colors.black),
                 ),

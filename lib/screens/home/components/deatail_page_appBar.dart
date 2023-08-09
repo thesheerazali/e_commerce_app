@@ -1,9 +1,9 @@
-import 'package:e_commerce_app/model/product_model.dart';
+
 import 'package:e_commerce_app/provider/fav_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../Data/data.dart';
+
 
 class DetailPageAppBar extends StatefulWidget {
   const DetailPageAppBar({
@@ -18,8 +18,8 @@ class _DetailPageAppBarState extends State<DetailPageAppBar> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<FavProvider>(context);
-    final data = provider.productModelsget;
+    // final provider = Provider.of<FavProvider>(context);
+    // final data = provider.productModelsget;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

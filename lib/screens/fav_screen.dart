@@ -1,6 +1,4 @@
-import 'package:e_commerce_app/floor_database/database.dart';
-import 'package:e_commerce_app/floor_database/entity/cart_entity.dart';
-import 'package:e_commerce_app/model/product_model.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -50,11 +48,11 @@ class _FavScreenState extends State<FavScreen> {
                       provider.isFav = false;
                     }
 
-                    // final database = await $FloorProductDatabase
-                    //     .databaseBuilder('product_database.db')
-                    //     .build();
-
-                    // final personDao = database.productDao;
+//                     final database = await $FloorProductDatabase
+//                         .databaseBuilder('product_database.db')
+//                         .build();
+//  final personDao = database.productDao;
+                   
                     // final Product product = Product(5, "Title", "Des");
 
                     // final result =  personDao.findPersonById(5);

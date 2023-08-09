@@ -1,3 +1,4 @@
+
 import 'package:e_commerce_app/model/product_model.dart';
 import 'package:e_commerce_app/provider/fav_provider.dart';
 
@@ -8,8 +9,9 @@ import '../../../Data/data.dart';
 import '../home_detail_page.dart';
 
 class CategorieTabBar extends StatefulWidget {
+  
   const CategorieTabBar({
-    super.key,
+    super.key, 
   });
 
   @override

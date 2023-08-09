@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:floor/floor.dart';
 
 @entity
@@ -13,6 +12,7 @@ class Cart {
   final String description;
   final int sale;
   final double price;
+  final int quintity;
 
   Cart(
       {required this.id,
@@ -22,5 +22,7 @@ class Cart {
       required this.description,
       required this.sale,
       required this.price,
-      required this.uid});
+      required this.uid,
+       required this.quintity
+      });
 }

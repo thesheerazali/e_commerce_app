@@ -7,21 +7,21 @@ part of 'database.dart';
 // **************************************************************************
 
 // ignore: avoid_classes_with_only_static_members
-class $FloorProductDatabase {
+class $FloorAppDatabase {
   /// Creates a database builder for a persistent database.
   /// Once a database is built, you should keep a reference to it and re-use it.
-  static _$ProductDatabaseBuilder databaseBuilder(String name) =>
-      _$ProductDatabaseBuilder(name);
+  static _$AppDatabaseBuilder databaseBuilder(String name) =>
+      _$AppDatabaseBuilder(name);
 
   /// Creates a database builder for an in memory database.
   /// Information stored in an in memory database disappears when the process is killed.
   /// Once a database is built, you should keep a reference to it and re-use it.
-  static _$ProductDatabaseBuilder inMemoryDatabaseBuilder() =>
-      _$ProductDatabaseBuilder(null);
+  static _$AppDatabaseBuilder inMemoryDatabaseBuilder() =>
+      _$AppDatabaseBuilder(null);
 }
 
-class _$ProductDatabaseBuilder {
-  _$ProductDatabaseBuilder(this.name);
+class _$AppDatabaseBuilder {
+  _$AppDatabaseBuilder(this.name);
 
   final String? name;
 
@@ -30,23 +30,23 @@ class _$ProductDatabaseBuilder {
   Callback? _callback;
 
   /// Adds migrations to the builder.
-  _$ProductDatabaseBuilder addMigrations(List<Migration> migrations) {
+  _$AppDatabaseBuilder addMigrations(List<Migration> migrations) {
     _migrations.addAll(migrations);
     return this;
   }
 
   /// Adds a database [Callback] to the builder.
-  _$ProductDatabaseBuilder addCallback(Callback callback) {
+  _$AppDatabaseBuilder addCallback(Callback callback) {
     _callback = callback;
     return this;
   }
 
   /// Creates the database and initializes it.
-  Future<ProductDatabase> build() async {
+  Future<AppDatabase> build() async {
     final path = name != null
         ? await sqfliteDatabaseFactory.getDatabasePath(name!)
         : ':memory:';
-    final database = _$ProductDatabase();
+    final database = _$AppDatabase();
     database.database = await database.open(
       path,
       _migrations,
@@ -56,8 +56,8 @@ class _$ProductDatabaseBuilder {
   }
 }
 
-class _$ProductDatabase extends ProductDatabase {
-  _$ProductDatabase([StreamController<String>? listener]) {
+class _$AppDatabase extends AppDatabase {
+  _$AppDatabase([StreamController<String>? listener]) {
     changeListener = listener ?? StreamController<String>.broadcast();
   }
 
@@ -85,7 +85,7 @@ class _$ProductDatabase extends ProductDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Cart` (`id` INTEGER NOT NULL, `uid` TEXT NOT NULL, `image` TEXT NOT NULL, `title` TEXT NOT NULL, `type` TEXT NOT NULL, `description` TEXT NOT NULL, `sale` INTEGER NOT NULL, `price` REAL NOT NULL, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `Cart` (`id` INTEGER NOT NULL, `uid` TEXT NOT NULL, `image` TEXT NOT NULL, `title` TEXT NOT NULL, `type` TEXT NOT NULL, `description` TEXT NOT NULL, `sale` INTEGER NOT NULL, `price` REAL NOT NULL, `quintity` INTEGER NOT NULL, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -115,7 +115,8 @@ class _$CartDAO extends CartDAO {
                   'type': item.type,
                   'description': item.description,
                   'sale': item.sale,
-                  'price': item.price
+                  'price': item.price,
+                  'quintity': item.quintity
                 },
             changeListener),
         _cartUpdateAdapter = UpdateAdapter(
@@ -130,7 +131,8 @@ class _$CartDAO extends CartDAO {
                   'type': item.type,
                   'description': item.description,
                   'sale': item.sale,
-                  'price': item.price
+                  'price': item.price,
+                  'quintity': item.quintity
                 },
             changeListener),
         _cartDeletionAdapter = DeletionAdapter(
@@ -145,7 +147,8 @@ class _$CartDAO extends CartDAO {
                   'type': item.type,
                   'description': item.description,
                   'sale': item.sale,
-                  'price': item.price
+                  'price': item.price,
+                  'quintity': item.quintity
                 },
             changeListener);
 
@@ -172,7 +175,8 @@ class _$CartDAO extends CartDAO {
             description: row['description'] as String,
             sale: row['sale'] as int,
             price: row['price'] as double,
-            uid: row['uid'] as String),
+            uid: row['uid'] as String,
+            quintity: row['quintity'] as int),
         arguments: [uid],
         queryableName: 'Cart',
         isView: false);
@@ -193,7 +197,8 @@ class _$CartDAO extends CartDAO {
             description: row['description'] as String,
             sale: row['sale'] as int,
             price: row['price'] as double,
-            uid: row['uid'] as String),
+            uid: row['uid'] as String,
+            quintity: row['quintity'] as int),
         arguments: [uid, id],
         queryableName: 'Cart',
         isView: false);
@@ -210,7 +215,8 @@ class _$CartDAO extends CartDAO {
             description: row['description'] as String,
             sale: row['sale'] as int,
             price: row['price'] as double,
-            uid: row['uid'] as String),
+            uid: row['uid'] as String,
+            quintity: row['quintity'] as int),
         arguments: [uid],
         queryableName: 'Cart',
         isView: false);

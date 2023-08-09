@@ -1,36 +1,46 @@
+import 'package:e_commerce_app/floor_database/dao/cart_dao.dart';
+import 'package:e_commerce_app/floor_database/database.dart';
 import 'package:e_commerce_app/provider/fav_provider.dart';
 import 'package:e_commerce_app/screens/cart_screen.dart';
 import 'package:e_commerce_app/screens/fav_screen.dart';
 import 'package:e_commerce_app/screens/home/home_page.dart';
 import 'package:e_commerce_app/screens/profile_screen.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
 
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
+  final database =
+      await $FloorAppDatabase.databaseBuilder('e_commerce.db').build();
 
-void main() {
-  runApp(const MyApp());
+  final dao = database.cartDao;
+  runApp(MyApp(dao: dao));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final CartDAO dao;
+  const MyApp({super.key, required this.dao});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => FavProvider(),
-      child: const MaterialApp(
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: MainPage(),
+        home: MainPage(dao: dao),
       ),
     );
   }
 }
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+  final CartDAO dao;
+
+  const MainPage({super.key, required this.dao});
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -39,8 +49,11 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   static int currentPage = 0;
 
+  
+
+
   final List pages = [
-    const DashboardScreen(),
+    const HomePage(),
     const CartScreen(),
     const FavScreen(),
     const ProfileScreen(),
