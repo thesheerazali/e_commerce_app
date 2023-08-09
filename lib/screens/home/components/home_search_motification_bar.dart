@@ -1,6 +1,7 @@
 import 'package:e_commerce_app/provider/fav_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 import '../../fav_screen.dart';
 
@@ -62,14 +63,23 @@ class _SearchNotifBarState extends State<SearchNotifBar> {
                         ));
                   },
                   icon: value.isFav
-                      ? Icon(
+                      ? const Icon(
                           Icons.favorite_sharp,
                           color: Colors.red,
+                          size: 30,
                         )
-                      : Icon(
+                      : const Icon(
                           Icons.favorite_sharp,
+                          size: 30,
                         ),
-                ),
+                ).badge(
+                    color: value.isFav ? Colors.red : Colors.black,
+                    count: value.productModelsget.length,
+                    textStyle: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: value.isFav ? Colors.white : Colors.white,
+                    )),
               ),
             ),
           ),
