@@ -1,7 +1,7 @@
-import 'package:e_commerce_app/floor_database/database.dart';
+
 import 'package:flutter/material.dart';
 
-import '../../const/const.dart';
+
 import 'components/deatail_page_appBar.dart';
 import 'components/detail_page_pictureVeiw.dart';
 import '../../model/product_model.dart';
@@ -210,14 +210,8 @@ class _DetailPageState extends State<DetailPage> {
               height: size.height * .060,
               width: size.width * .35,
               child: ElevatedButton(
-                onPressed: () async {
-                  final database = await $FloorAppDatabase
-                      .databaseBuilder('product_database.db')
-                      .build();
-                  final cartDao2 = database.cartDao;
-                  var cartProducts =
-                      cartDao2.getCartItemsbyUId(UID, widget.productdata.id);
-                      
+                onPressed: ()  {
+                 
                 },
                 style: const ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(Colors.black),

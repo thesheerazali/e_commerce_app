@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,19 +23,21 @@ class _FavScreenState extends State<FavScreen> {
       body: ListView.builder(
         itemCount: data.length,
         itemBuilder: (context, index) {
-          return ListTile(
-              shape: RoundedRectangleBorder(
-                //<-- SEE HERE
-                side: const BorderSide(width: 2),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              leading: CircleAvatar(
-                backgroundColor: const Color(0xff6ae792),
-                backgroundImage: AssetImage(data[index].image),
-              ),
-              title: Text(data[index].title),
-              subtitle: const Text('Item description'),
-              trailing: IconButton(
+          return Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: ListTile(
+                shape: RoundedRectangleBorder(
+                  //<-- SEE HERE
+                  side: const BorderSide(width: 2),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                leading: CircleAvatar(
+                  backgroundColor: const Color(0xff6ae792),
+                  backgroundImage: AssetImage(data[index].image),
+                ),
+                title: Text(data[index].title),
+                subtitle: const Text('Item description'),
+                trailing: IconButton(
                   onPressed: () async {
                     provider.addFav(
                       data[index],
@@ -48,11 +49,11 @@ class _FavScreenState extends State<FavScreen> {
                       provider.isFav = false;
                     }
 
-//                     final database = await $FloorProductDatabase
-//                         .databaseBuilder('product_database.db')
-//                         .build();
-//  final personDao = database.productDao;
-                   
+                    //                     final database = await $FloorProductDatabase
+                    //                         .databaseBuilder('product_database.db')
+                    //                         .build();
+                    //  final personDao = database.productDao;
+
                     // final Product product = Product(5, "Title", "Des");
 
                     // final result =  personDao.findPersonById(5);
@@ -62,7 +63,10 @@ class _FavScreenState extends State<FavScreen> {
                     // print(
                     //     '-------------------------------------------------After insertion');
                   },
-                  icon: Icon(Icons.remove_circle)));
+                  icon: Icon(Icons.remove_circle),
+                  color: Colors.red,
+                )),
+          );
         },
       ),
     );

@@ -1,5 +1,4 @@
-import 'package:e_commerce_app/floor_database/dao/cart_dao.dart';
-import 'package:e_commerce_app/floor_database/database.dart';
+
 import 'package:e_commerce_app/provider/fav_provider.dart';
 import 'package:e_commerce_app/screens/cart_screen.dart';
 import 'package:e_commerce_app/screens/fav_screen.dart';
@@ -11,19 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  final database =
-      await $FloorAppDatabase.databaseBuilder('e_commerce.db').build();
-
-  final dao = database.cartDao;
-  runApp(MyApp(dao: dao));
+ void main()  {
+  
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final CartDAO dao;
-  const MyApp({super.key, required this.dao});
+  
+  const MyApp({super.key, });
 
   @override
   Widget build(BuildContext context) {
@@ -31,16 +25,16 @@ class MyApp extends StatelessWidget {
       create: (context) => FavProvider(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: MainPage(dao: dao),
+        home: MainPage(),
       ),
     );
   }
 }
 
 class MainPage extends StatefulWidget {
-  final CartDAO dao;
 
-  const MainPage({super.key, required this.dao});
+
+  const MainPage({super.key, });
 
   @override
   State<MainPage> createState() => _MainPageState();
