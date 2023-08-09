@@ -63,6 +63,8 @@ class _$AppDatabase extends AppDatabase {
 
   CartDao? _cartDaoInstance;
 
+  FavDao? _favDaoInstance;
+
   Future<sqflite.Database> open(
     String path,
     List<Migration> migrations, [
@@ -86,6 +88,8 @@ class _$AppDatabase extends AppDatabase {
       onCreate: (database, version) async {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Cart` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT NOT NULL, `type` TEXT NOT NULL, `image` TEXT NOT NULL, `price` REAL NOT NULL, `quaintity` INTEGER NOT NULL)');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `Fav` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT NOT NULL, `type` TEXT NOT NULL, `image` TEXT NOT NULL, `price` REAL NOT NULL, `quaintity` INTEGER NOT NULL)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -96,6 +100,11 @@ class _$AppDatabase extends AppDatabase {
   @override
   CartDao get cartDao {
     return _cartDaoInstance ??= _$CartDao(database, changeListener);
+  }
+
+  @override
+  FavDao get favDao {
+    return _favDaoInstance ??= _$FavDao(database, changeListener);
   }
 }
 
@@ -177,5 +186,86 @@ class _$CartDao extends CartDao {
   @override
   Future<void> deleteContacts(Cart cart) async {
     await _cartDeletionAdapter.delete(cart);
+  }
+}
+
+class _$FavDao extends FavDao {
+  _$FavDao(
+    this.database,
+    this.changeListener,
+  )   : _queryAdapter = QueryAdapter(database),
+        _favInsertionAdapter = InsertionAdapter(
+            database,
+            'Fav',
+            (Fav item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'type': item.type,
+                  'image': item.image,
+                  'price': item.price,
+                  'quaintity': item.quaintity
+                }),
+        _favUpdateAdapter = UpdateAdapter(
+            database,
+            'Fav',
+            ['id'],
+            (Fav item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'type': item.type,
+                  'image': item.image,
+                  'price': item.price,
+                  'quaintity': item.quaintity
+                }),
+        _favDeletionAdapter = DeletionAdapter(
+            database,
+            'Fav',
+            ['id'],
+            (Fav item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'type': item.type,
+                  'image': item.image,
+                  'price': item.price,
+                  'quaintity': item.quaintity
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<Fav> _favInsertionAdapter;
+
+  final UpdateAdapter<Fav> _favUpdateAdapter;
+
+  final DeletionAdapter<Fav> _favDeletionAdapter;
+
+  @override
+  Future<List<Fav>> getAllFavData() async {
+    return _queryAdapter.queryList('SELECT * FROM fav',
+        mapper: (Map<String, Object?> row) => Fav(
+            row['id'] as int?,
+            row['title'] as String,
+            row['type'] as String,
+            row['image'] as String,
+            row['price'] as double,
+            row['quaintity'] as int));
+  }
+
+  @override
+  Future<void> addContacts(Fav fav) async {
+    await _favInsertionAdapter.insert(fav, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> updateContacts(Fav fav) async {
+    await _favUpdateAdapter.update(fav, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> deleteContacts(Fav cart) async {
+    await _favDeletionAdapter.delete(cart);
   }
 }

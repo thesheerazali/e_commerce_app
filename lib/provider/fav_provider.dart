@@ -1,35 +1,29 @@
-import 'package:e_commerce_app/model/product_model.dart';
-import 'package:flutter/cupertino.dart';
+// import 'package:e_commerce_app/model/product_model.dart';
+// import 'package:flutter/cupertino.dart';
 
-class FavProvider extends ChangeNotifier {
-  final List<ProductModel> productModels = [];
-  List<ProductModel> get productModelsget => productModels;
+// class FavProvider extends ChangeNotifier {
+//   final List<ProductModel> productModels = [];
+//   List<ProductModel> get productModelsget => productModels;
 
-  bool isFav = false;
+//   bool isFav = false;
   
  
 
-  void addFav(
-    ProductModel data,
-  ) {
-    // productModels.add(productModelsget);
+//   void addFav(
+//     ProductModel data,
+//   ) {
+//     // productModels.add(productModelsget);
 
-    if (productModels.contains(data)) {
-      productModels.remove(data);
-     isFav = false;
-    } else {
-      productModels.add(data);
-      isFav = true;
-    }
+//     if (productModels.contains(data)) {
+//       productModels.remove(data);
+//      isFav = false;
+//     } else {
+//       productModels.add(data);
+//       isFav = true;
+//     }
 
-    notifyListeners();
-  }
+//     notifyListeners();
+//   }
 
-  bool isExit(
-    ProductModel productMOdel1,
-  ) {
-    final isExits = productModels.contains(productMOdel1);
-
-    return isExits;
-  }
-}
+ 
+// }

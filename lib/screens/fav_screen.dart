@@ -1,7 +1,9 @@
+import 'package:e_commerce_app/db/entity/fav.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/fav_provider.dart';
+import '../provider/local_db_fav_provider.dart';
 
 class FavScreen extends StatefulWidget {
   const FavScreen({super.key});
@@ -11,17 +13,31 @@ class FavScreen extends StatefulWidget {
 }
 
 class _FavScreenState extends State<FavScreen> {
+
+   @override
+  void initState() {
+    super.initState();
+    // WidgetsBinding.instance.addPostFrameCallback((_) async {
+    //   Provider.of<LocalDBFavProvider>(context, listen: false)
+    //       .fetchAllContacts(( Provider.of<LocalDBFavProvider>(context,listen: false).getfavItems));
+    // });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<FavProvider>(context);
-    final data = provider.productModelsget;
+    final favprovider = Provider.of<LocalDBFavProvider>(context);
+
+ 
+
+
+  
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Favriotes"),
       ),
       body: ListView.builder(
-        itemCount: data.length,
+        itemCount: favprovider.getfavItems.length,
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.all(12.0),
@@ -33,35 +49,21 @@ class _FavScreenState extends State<FavScreen> {
                 ),
                 leading: CircleAvatar(
                   backgroundColor: const Color(0xff6ae792),
-                  backgroundImage: AssetImage(data[index].image),
+                  backgroundImage: AssetImage(favprovider.getfavItems[index].image),
                 ),
-                title: Text(data[index].title),
+                title: Text(favprovider.getfavItems[index].title),
                 subtitle: const Text('Item description'),
                 trailing: IconButton(
                   onPressed: () async {
-                    provider.addFav(
-                      data[index],
-                    );
+                    
 
-                    if (provider.productModelsget.isNotEmpty) {
-                      provider.isFav = true;
+                    if (favprovider.getfavItems.isNotEmpty) {
+                      favprovider.isFav = true;
                     } else {
-                      provider.isFav = false;
+                      favprovider.isFav = false;
                     }
 
-                    //                     final database = await $FloorProductDatabase
-                    //                         .databaseBuilder('product_database.db')
-                    //                         .build();
-                    //  final personDao = database.productDao;
-
-                    // final Product product = Product(5, "Title", "Des");
-
-                    // final result =  personDao.findPersonById(5);
-
-                    // print('-------------------------------------------------');
-                    // database.productDao.insertProduct(product);
-                    // print(
-                    //     '-------------------------------------------------After insertion');
+                  
                   },
                   icon: Icon(Icons.remove_circle),
                   color: Colors.red,

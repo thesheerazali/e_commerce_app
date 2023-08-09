@@ -1,4 +1,4 @@
-import 'package:e_commerce_app/provider/local_db_provider.dart';
+import 'package:e_commerce_app/provider/local_db__cart_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,13 +18,14 @@ class _CartScreenState extends State<CartScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<LocalDBProvider>(context, listen: false).fetchAllContacts();
+      Provider.of<LocalDBCartProvider>(context, listen: false)
+          .fetchAllContacts();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final provider2 = Provider.of<LocalDBProvider>(context);
+    final provider2 = Provider.of<LocalDBCartProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Cart"),
@@ -48,7 +49,7 @@ class _CartScreenState extends State<CartScreen> {
               trailing: IconButton(
                 onPressed: () {
                   provider2.deleteItem(index);
-
+                  setState(() {});
                   print("delete");
                 },
                 icon: const Icon(Icons.remove_circle),

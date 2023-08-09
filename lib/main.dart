@@ -1,6 +1,6 @@
-
 import 'package:e_commerce_app/provider/fav_provider.dart';
-import 'package:e_commerce_app/provider/local_db_provider.dart';
+import 'package:e_commerce_app/provider/local_db__cart_provider.dart';
+import 'package:e_commerce_app/provider/local_db_fav_provider.dart';
 import 'package:e_commerce_app/screens/cart_screen.dart';
 import 'package:e_commerce_app/screens/fav_screen.dart';
 import 'package:e_commerce_app/screens/home/home_page.dart';
@@ -11,39 +11,35 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
 
- void main()  {
-  
+void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  
-  const MyApp({super.key, });
+  const MyApp({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-        create: (context) => FavProvider()),
-
-         ChangeNotifierProvider(
-        create: (context) => LocalDBProvider()),
+       
+        ChangeNotifierProvider(create: (context) => LocalDBCartProvider()),
+        ChangeNotifierProvider(create: (context) => LocalDBFavProvider()),
       ],
-      builder: (context, child) => 
-         const MaterialApp(
-          debugShowCheckedModeBanner: false,
-          home: MainPage(),
-        ),
-      
+      builder: (context, child) => const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: MainPage(),
+      ),
     );
   }
 }
 
 class MainPage extends StatefulWidget {
-
-
-  const MainPage({super.key, });
+  const MainPage({
+    super.key,
+  });
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -57,7 +53,7 @@ class _MainPageState extends State<MainPage> {
     const FavScreen(),
     const ProfileScreen(),
   ];
- 
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

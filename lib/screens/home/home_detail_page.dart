@@ -211,7 +211,7 @@ class _DetailPageState extends State<DetailPage> {
               width: size.width * .35,
               child: ElevatedButton(
                 onPressed: () async {
-                  await (await LocalDbService.contactDao).addContacts(Cart(
+                  await (await LocalDbService.cartDao).addContacts(Cart(
                       null,
                       widget.productdata.title,
                       widget.productdata.type,
