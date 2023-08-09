@@ -219,7 +219,7 @@ class _DetailPageState extends State<DetailPage> {
                       widget.productdata.price,
                       widget.productdata.id));
 
-                  print("-------data Savedd");
+                  print("data sabeed");
                 },
                 style: const ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(Colors.black),

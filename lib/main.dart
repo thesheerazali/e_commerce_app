@@ -1,5 +1,6 @@
 
 import 'package:e_commerce_app/provider/fav_provider.dart';
+import 'package:e_commerce_app/provider/local_db_provider.dart';
 import 'package:e_commerce_app/screens/cart_screen.dart';
 import 'package:e_commerce_app/screens/fav_screen.dart';
 import 'package:e_commerce_app/screens/home/home_page.dart';
@@ -12,7 +13,7 @@ import 'package:provider/provider.dart';
 
  void main()  {
   
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -21,12 +22,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => FavProvider(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: MainPage(),
-      ),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+        create: (context) => FavProvider()),
+
+         ChangeNotifierProvider(
+        create: (context) => LocalDBProvider()),
+      ],
+      builder: (context, child) => 
+         const MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: MainPage(),
+        ),
+      
     );
   }
 }
@@ -42,16 +51,13 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   static int currentPage = 0;
-
-  
-
-
   final List pages = [
     const HomePage(),
     const CartScreen(),
     const FavScreen(),
     const ProfileScreen(),
   ];
+ 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

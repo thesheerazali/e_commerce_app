@@ -1,7 +1,7 @@
 
 
 import 'package:e_commerce_app/screens/home/components/ads_container.dart';
-import 'package:flutter/cupertino.dart';
+
 
 import 'package:flutter/material.dart';
 
