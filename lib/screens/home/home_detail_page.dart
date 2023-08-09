@@ -1,7 +1,7 @@
-
 import 'package:flutter/material.dart';
 
-
+import '../../db/entity/cart.dart';
+import '../../db/services/localdb_services.dart';
 import 'components/deatail_page_appBar.dart';
 import 'components/detail_page_pictureVeiw.dart';
 import '../../model/product_model.dart';
@@ -210,8 +210,16 @@ class _DetailPageState extends State<DetailPage> {
               height: size.height * .060,
               width: size.width * .35,
               child: ElevatedButton(
-                onPressed: ()  {
-                 
+                onPressed: () async {
+                  await (await LocalDbService.contactDao).addContacts(Cart(
+                      null,
+                      widget.productdata.title,
+                      widget.productdata.type,
+                      widget.productdata.image,
+                      widget.productdata.price,
+                      widget.productdata.id));
+
+                  print("-------data Savedd");
                 },
                 style: const ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(Colors.black),

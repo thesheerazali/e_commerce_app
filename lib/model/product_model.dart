@@ -1,6 +1,8 @@
 
 
 
+import 'dart:ffi';
+
 class ProductModel {
   int id;
   String image;
