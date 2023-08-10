@@ -1,5 +1,4 @@
 import 'package:e_commerce_app/provider/fav_provider.dart';
-import 'package:e_commerce_app/provider/local_db_fav_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -49,7 +48,7 @@ class _SearchNotifBarState extends State<SearchNotifBar> {
           const SizedBox(
             width: 15,
           ),
-          Consumer<LocalDBFavProvider>(
+          Consumer<FavProvider>(
             builder: (context, value, child) => Container(
               decoration: BoxDecoration(
                   color: const Color.fromARGB(255, 231, 228, 228),
@@ -60,29 +59,27 @@ class _SearchNotifBarState extends State<SearchNotifBar> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const FavScreen(),
+                          builder: (context) => FavScreen(),
                         ));
                   },
                   icon: value.isFav
                       ? const Icon(
                           Icons.favorite_sharp,
                           color: Colors.red,
-                          size: 30,
                         )
-                      : const Icon(
+                      :const Icon(
                           Icons.favorite_sharp,
-                          size: 30,
                         ),
-                ).badge(
+                ),
+              ),
+            ).badge(
                     color: value.isFav ? Colors.red : Colors.black,
-                    count: value.getfavItems.length,
+                    count: value.productModelsget.length,
                     textStyle: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                       color: value.isFav ? Colors.white : Colors.white,
                     )),
-              ),
-            ),
           ),
         ],
       ),

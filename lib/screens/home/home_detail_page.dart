@@ -1,7 +1,6 @@
+
 import 'package:flutter/material.dart';
 
-import '../../db/entity/cart.dart';
-import '../../db/services/localdb_services.dart';
 import 'components/deatail_page_appBar.dart';
 import 'components/detail_page_pictureVeiw.dart';
 import '../../model/product_model.dart';
@@ -32,7 +31,7 @@ class _DetailPageState extends State<DetailPage> {
             const SizedBox(
               height: 30,
             ),
-            const DetailPageAppBar(),
+             DetailPageAppBar(),
             const SizedBox(
               height: 20,
             ),
@@ -53,9 +52,6 @@ class _DetailPageState extends State<DetailPage> {
             const SizedBox(
               height: 10,
             ),
-
-            //All description
-
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -200,8 +196,7 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                   Text(
                     widget.productdata.price.toString(),
-                    style: const TextStyle(
-                        fontSize: 30, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -210,17 +205,7 @@ class _DetailPageState extends State<DetailPage> {
               height: size.height * .060,
               width: size.width * .35,
               child: ElevatedButton(
-                onPressed: () async {
-                  await (await LocalDbService.cartDao).addContacts(Cart(
-                      null,
-                      widget.productdata.title,
-                      widget.productdata.type,
-                      widget.productdata.image,
-                      widget.productdata.price,
-                      widget.productdata.id));
-
-                  print("data sabeed");
-                },
+                onPressed: () {},
                 style: const ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(Colors.black),
                 ),

@@ -25,8 +25,11 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
        
-        ChangeNotifierProvider(create: (context) => LocalDBCartProvider()),
-        ChangeNotifierProvider(create: (context) => LocalDBFavProvider()),
+     
+          ChangeNotifierProvider(create: (context) =>  FavProvider()),
+
+      
+       
       ],
       builder: (context, child) => const MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -47,7 +50,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   static int currentPage = 0;
-  final List pages = [
+  final List<Widget> pages = [
     const HomePage(),
     const CartScreen(),
     const FavScreen(),
@@ -97,7 +100,10 @@ class _MainPageState extends State<MainPage> {
           ],
         ),
       ),
-      body: pages[currentPage],
+      body: IndexedStack(
+        index: currentPage,
+        children: pages,
+      ),
     );
   }
 }

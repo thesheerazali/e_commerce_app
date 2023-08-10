@@ -1,10 +1,9 @@
-
+import 'package:e_commerce_app/model/product_model.dart';
 import 'package:e_commerce_app/provider/fav_provider.dart';
-import 'package:e_commerce_app/provider/local_db_fav_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
+import '../../../Data/data.dart';
 
 class DetailPageAppBar extends StatefulWidget {
   const DetailPageAppBar({
@@ -19,8 +18,8 @@ class _DetailPageAppBarState extends State<DetailPageAppBar> {
 
   @override
   Widget build(BuildContext context) {
-    // final provider = Provider.of<FavProvider>(context);
-    // final data = provider.productModelsget;
+    final provider = Provider.of<FavProvider>(context);
+    final data = provider.productModelsget;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -40,7 +39,7 @@ class _DetailPageAppBarState extends State<DetailPageAppBar> {
           "Product Detail",
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
-        Consumer<LocalDBFavProvider>(
+        Consumer<FavProvider>(
           builder: (context, value, child) => Container(
             decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 231, 228, 228),
@@ -50,7 +49,7 @@ class _DetailPageAppBarState extends State<DetailPageAppBar> {
               onPressed: () {
               //  value.addFav(data[])
               },
-              icon: value.getfavItems.isEmpty
+              icon: value.productModelsget.isEmpty
                   ? const Icon(
                       Icons.favorite_sharp,
                     )

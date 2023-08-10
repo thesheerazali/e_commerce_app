@@ -1,14 +1,10 @@
 import 'package:e_commerce_app/model/product_model.dart';
 import 'package:e_commerce_app/provider/fav_provider.dart';
-import 'package:e_commerce_app/provider/local_db_fav_provider.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../Data/data.dart';
-import '../../../db/entity/cart.dart';
-import '../../../db/entity/fav.dart';
-import '../../../db/services/localdb_services.dart';
 import '../home_detail_page.dart';
 
 class CategorieTabBar extends StatefulWidget {
@@ -242,7 +238,7 @@ class _CategorieTabBarState extends State<CategorieTabBar>
                               fontSize: 18.0,
                               fontWeight: FontWeight.bold)),
                       const Spacer(),
-                      Consumer<LocalDBFavProvider>(
+                      Consumer<FavProvider>(
                         builder: (context, provider, child) => Container(
                           height: size.height * .05,
                           width: size.width * .11,
@@ -251,26 +247,15 @@ class _CategorieTabBarState extends State<CategorieTabBar>
                             borderRadius: BorderRadius.circular(50),
                           ),
                           child: IconButton(
-                            onPressed: () async {
-                              await (await LocalDbService.favDao).addContacts(
-                                  Fav(
-                                      null,
-                                      data[index].title,
-                                      data[index].type,
-                                      data[index].image,
-                                      data[index].price,
-                                      data[index].id));
-
-                              print("data sabeed");
-
-                              
-                              if (provider.getfavItems.isNotEmpty) {
+                            onPressed: () {
+                              provider.addFav(data[index]);
+                              if (provider.productModelsget.isNotEmpty) {
                                 provider.isFav = true;
                               } else {
                                 provider.isFav = false;
                               }
                             },
-                            icon: provider.getfavItems.isEmpty
+                            icon: provider.productModels.contains(data[index])
                                 ? const Icon(
                                     Icons.favorite_sharp,
                                     color: Colors.red,
