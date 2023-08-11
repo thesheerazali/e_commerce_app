@@ -1,5 +1,6 @@
-import 'package:e_commerce_app/db/entity/fav.dart';
 import 'package:floor/floor.dart';
+
+import '../entity/fav.dart';
 
 @dao
 abstract class FavDao {
@@ -11,5 +12,5 @@ abstract class FavDao {
   @update
   Future<void> updateContacts(Fav fav);
   @delete
-  Future<void> deleteContacts(Fav cart);
+  Future<void> deleteContacts(Fav fav);
 }

@@ -2,17 +2,24 @@ import 'package:floor/floor.dart';
 
 import '../entity/cart.dart';
 
-@dao 
-abstract class CartDao{
+@dao
+abstract class CartDao {
+  @Query("SELECT * FROM cart WHERE uid=:uid")
+  Future<List<Cart>> getAllCartDataByUid(String uid);
 
-   @Query("SELECT * FROM cart")
-  Future<List<Cart>> getAllCartData();
+  @Query("SELECT * FROM cart WHERE uid=:uid AND productId=:id")
+  Future<Cart?> getCartInDataByUid(String uid, int id);
+
+  @Query("DELETE FROM cart WHERE uid =:uid")
+  Future<List<Cart>> clearCartByUId(String uid);
+
+  @Query("UPDATE cart SET uid=:uid")
+  Future<void> updateUidCart(String uid);
 
   @insert
   Future<void> addContacts(Cart cart);
   @update
-  Future<void> updateContacts(Cart cart);
+  Future<int> updateContacts(Cart cart);
   @delete
-  Future<void> deleteContacts(Cart cart);
-  
+  Future<int> deleteContacts(Cart cart);
 }

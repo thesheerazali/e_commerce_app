@@ -2,12 +2,13 @@ import 'package:floor/floor.dart';
 
 @entity
 class Cart {
-  @PrimaryKey(autoGenerate: true)
-  final int? id;
+  @primaryKey
+   final int productId;
 
-  final String title, type, image;
-  final double price ;
-  final int quaintity;
+  final String title, type, image , uid;
+   double price;
+   int quaintity;
 
-  Cart(this.id,this.title, this.type, this.image, this.price, this.quaintity);
+  Cart({required this.productId, required this.title, required this.type, required this.image,required this.price,
+      required this.quaintity, required this.uid});
 }

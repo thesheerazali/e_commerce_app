@@ -2,12 +2,12 @@ import 'package:floor/floor.dart';
 
 @entity
 class Fav {
-  @PrimaryKey(autoGenerate: true)
+  @primaryKey
   final int? id;
 
   final String title, type, image;
-  final double price ;
+  final double price;
   final int quaintity;
 
-  Fav(this.id,this.title, this.type, this.image, this.price, this.quaintity);
+  Fav(this.id, this.title, this.type, this.image, this.price, this.quaintity);
 }
