@@ -1,6 +1,6 @@
+import 'package:e_commerce_app/db/services/localdb_services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 
 import '../../../Data/data.dart';
 import '../../../db/entity/fav.dart';
@@ -165,8 +165,6 @@ class _CategorieTabBarState extends State<CategorieTabBar>
         childAspectRatio: size.aspectRatio / .78,
       ),
       itemBuilder: (context, index) {
-        Fav fav = Fav(null, data[index].title, data[index].type,
-            data[index].image, data[index].price, data[index].id);
         return GestureDetector(
             onTap: () {
               FocusManager.instance.primaryFocus?.unfocus();
@@ -245,7 +243,7 @@ class _CategorieTabBarState extends State<CategorieTabBar>
                             borderRadius: BorderRadius.circular(50),
                           ),
                           child: IconButton(
-                            onPressed: () {
+                            onPressed: () async {
                               if (value.getfavItems.isNotEmpty) {
                                 value.isFav = false;
                               } else {
@@ -253,7 +251,7 @@ class _CategorieTabBarState extends State<CategorieTabBar>
                               }
 
                               Fav addfav = Fav(
-                                  null,
+                                  data[index].id += 1,
                                   data[index].title,
                                   data[index].type,
                                   data[index].image,
@@ -262,14 +260,9 @@ class _CategorieTabBarState extends State<CategorieTabBar>
 
                               value.addToFav(addfav);
                               value.fetchAllContacts();
+                              print(value.getById(index));
                             },
-                            icon: value.getfavItems.contains(Fav(
-                                    null,
-                                    data[index].title,
-                                    data[index].type,
-                                    data[index].image,
-                                    data[index].price,
-                                    data[index].id))
+                            icon: value.getById(index)
                                 ? const Icon(
                                     Icons.favorite_border_outlined,
                                   )

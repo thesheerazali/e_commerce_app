@@ -10,14 +10,20 @@ class LocalDBFavProvider extends ChangeNotifier {
   bool isFav = false;
 
   fetchAllContacts() async {
-    favItems = await (await LocalDbService.favDao).getAllFavData() ;
+    favItems = await (await LocalDbService.favDao).getAllFavData();
     isFav = true;
 
     notifyListeners();
   }
 
+  getById(index) async {
+    var id = await (await LocalDbService.favDao).getAllFavData();
+
+    return getfavItems.contains(id[index]);
+  }
+
   addToFav(Fav fav) async {
-      (await LocalDbService.favDao).addContacts(fav);
+    (await LocalDbService.favDao).addContacts(fav);
 
     if (favItems.contains(fav)) {
       // productModels.remove(data);

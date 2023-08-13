@@ -3,7 +3,7 @@ import 'package:floor/floor.dart';
 @entity
 class Fav {
   @primaryKey
-  final int? id;
+  final int id;
 
   final String title, type, image;
   final double price;

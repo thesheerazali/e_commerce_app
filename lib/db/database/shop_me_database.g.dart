@@ -91,7 +91,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Cart` (`productId` INTEGER NOT NULL, `title` TEXT NOT NULL, `type` TEXT NOT NULL, `image` TEXT NOT NULL, `uid` TEXT NOT NULL, `price` REAL NOT NULL, `quaintity` INTEGER NOT NULL, PRIMARY KEY (`productId`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Fav` (`id` INTEGER, `title` TEXT NOT NULL, `type` TEXT NOT NULL, `image` TEXT NOT NULL, `price` REAL NOT NULL, `quaintity` INTEGER NOT NULL, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `Fav` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `type` TEXT NOT NULL, `image` TEXT NOT NULL, `price` REAL NOT NULL, `quaintity` INTEGER NOT NULL, PRIMARY KEY (`id`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `email` TEXT NOT NULL, `password` TEXT NOT NULL)');
 
@@ -299,12 +299,25 @@ class _$FavDao extends FavDao {
   Future<List<Fav>> getAllFavData() async {
     return _queryAdapter.queryList('SELECT * FROM fav',
         mapper: (Map<String, Object?> row) => Fav(
-            row['id'] as int?,
+            row['id'] as int,
             row['title'] as String,
             row['type'] as String,
             row['image'] as String,
             row['price'] as double,
             row['quaintity'] as int));
+  }
+
+  @override
+  Future<List<Fav>> clearCartByUId(int id) async {
+    return _queryAdapter.queryList('SELECT * FROM cart WHERE id =?1',
+        mapper: (Map<String, Object?> row) => Fav(
+            row['id'] as int,
+            row['title'] as String,
+            row['type'] as String,
+            row['image'] as String,
+            row['price'] as double,
+            row['quaintity'] as int),
+        arguments: [id]);
   }
 
   @override
@@ -346,7 +359,7 @@ class _$UsersDao extends UsersDao {
   final InsertionAdapter<Users> _usersInsertionAdapter;
 
   @override
-  Future<Users?> loginUser(
+  Future<Users?> getUserByEmailPassword(
     String email,
     String password,
   ) async {

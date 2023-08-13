@@ -7,6 +7,9 @@ abstract class FavDao {
   @Query("SELECT * FROM fav")
   Future<List<Fav>> getAllFavData();
 
+  @Query("SELECT * FROM cart WHERE id =:id")
+  Future<List<Fav>> clearCartByUId(int id);
+
   @insert
   Future<void> addContacts(Fav fav);
   @update

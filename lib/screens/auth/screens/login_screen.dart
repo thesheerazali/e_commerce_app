@@ -25,7 +25,8 @@ class _LoginScreenState extends State<LoginScreen> {
   void _login() async {
     var email = emailController.text;
     var pass = passwordController.text;
-    final user = await (await LocalDbService.usersDao).loginUser(email, pass);
+    final user = await (await LocalDbService.usersDao)
+        .getUserByEmailPassword(email, pass);
 
     if (emailController.text == user?.email &&
         passwordController.text == user?.password) {
@@ -34,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => MainPage(),
+              builder: (context) => const MainPage(),
             ));
       });
       print(loginStatus);
@@ -45,6 +46,24 @@ class _LoginScreenState extends State<LoginScreen> {
         snakeBar(context, loginStatus);
       });
       print(loginStatus);
+    }
+  }
+
+  void _signUp() async {
+    var existUser = await (await LocalDbService.usersDao)
+        .getUserByEmailPassword(emailController.text, passwordController.text);
+
+    if (existUser?.email == emailController.text) {
+      // ignore: use_build_context_synchronously
+      snakeBar(context, "You are already SignIn");
+      print("You are already SignIn");
+    } else {
+      final userData =
+          Users(null, emailController.text, passwordController.text);
+      await (await LocalDbService.usersDao).insertUser(userData);
+      // ignore: use_build_context_synchronously
+      snakeBar(context, "Signup Successfull");
+      print("Signup Successfull");
     }
   }
 
@@ -166,12 +185,8 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 20.h,
             ),
             InkWell(
-              onTap: () async {
-                final userData =
-                    Users(null, emailController.text, passwordController.text);
-                await (await LocalDbService.usersDao).insertUser(userData);
-
-                snakeBar(context, "Signup Successfull");
+              onTap: () {
+                _signUp();
               },
               child: Container(
                 height: 50.h,
