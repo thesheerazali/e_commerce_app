@@ -326,6 +326,20 @@ class _$FavDao extends FavDao {
   }
 
   @override
+  Future<Fav?> getUserDataByEmail(String uid) async {
+    return _queryAdapter.query('SELECT * FROM fav WHERE uid = ?1',
+        mapper: (Map<String, Object?> row) => Fav(
+            productId: row['productId'] as int?,
+            title: row['title'] as String,
+            type: row['type'] as String,
+            image: row['image'] as String,
+            price: row['price'] as double,
+            quaintity: row['quaintity'] as int,
+            uid: row['uid'] as String),
+        arguments: [uid]);
+  }
+
+  @override
   Future<Fav?> getFavInDataByUid(
     String uid,
     int id,
@@ -397,6 +411,19 @@ class _$UsersDao extends UsersDao {
             phone: row['phone'] as String?,
             gender: row['gender'] as String?),
         arguments: [email, password]);
+  }
+
+  @override
+  Future<List<String>> getAllUserEmails() async {
+    return _queryAdapter.queryList('SELECT email FROM users',
+        mapper: (Map<String, Object?> row) => row.values.first as String);
+  }
+
+  @override
+  Future<String?> getEmailByEmail(String email) async {
+    return _queryAdapter.query('SELECT email FROM users WHERE email = ?1',
+        mapper: (Map<String, Object?> row) => row.values.first as String,
+        arguments: [email]);
   }
 
   @override

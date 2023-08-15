@@ -244,19 +244,29 @@ class _CategorieTabBarState extends State<CategorieTabBar>
                           ),
                           child: IconButton(
                               onPressed: () async {
+                                var emailController =
+                                    Provider.of<LocalDBFavProvider>(context,
+                                            listen: false)
+                                        .emailController;
                                 try {
-                                  var favProducts =
-                                      await (await LocalDbService.favDao)
-                                          .getFavInDataByUid(
-                                              "NOT_SIGN_IN", data[index].id);
+                                  var favProducts = await (await LocalDbService
+                                          .favDao)
+                                      .getFavInDataByUid(
+                                          emailController.text, data[index].id);
                                   if (favProducts != null) {
-                                    favProducts.quaintity += 1;
+                                    // favProducts.quaintity += 1;
 
-                                    await (await LocalDbService.favDao)
-                                        .updateContacts(favProducts);
-                                    snakeBar(context,
-                                        "Update items in Cart successfully");
+                                    // await (await LocalDbService.favDao)
+                                    //     .updateContacts(favProducts);
+                                    snakeBar(
+                                        context, " Already Added successfully");
                                   } else {
+                                    String? emails = await (await LocalDbService
+                                            .usersDao)
+                                        .getEmailByEmail(emailController.text);
+
+                                    print(emails);
+
                                     Fav addfav = Fav(
                                         productId: null,
                                         title: data[index].title,
@@ -264,7 +274,7 @@ class _CategorieTabBarState extends State<CategorieTabBar>
                                         image: data[index].image,
                                         price: data[index].price,
                                         quaintity: data[index].id,
-                                        uid: "NOT_SIGN_IN");
+                                        uid: emails!);
 
                                     value.addToFav(addfav);
                                     value.fetchAllContacts();

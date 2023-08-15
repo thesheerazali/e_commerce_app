@@ -1,8 +1,10 @@
 import 'dart:math';
 
+import 'package:e_commerce_app/provider/local_db_fav_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 import '../../../db/entity/users.dart';
 import '../../../db/services/localdb_services.dart';
@@ -18,11 +20,16 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  // final TextEditingController emailController = TextEditingController();
+  // final TextEditingController passwordController = TextEditingController();
   String loginStatus = '';
 
-  void _login() async {
+  void _login(context) async {
+    var emailController =
+        Provider.of<LocalDBFavProvider>(context, listen: false).emailController;
+    var passwordController =
+        Provider.of<LocalDBFavProvider>(context, listen: false)
+            .passwordController;
     var email = emailController.text;
     var pass = passwordController.text;
     final user = await (await LocalDbService.usersDao)
@@ -49,7 +56,12 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void _signUp() async {
+  void _signUp(context) async {
+    var emailController =
+        Provider.of<LocalDBFavProvider>(context, listen: false).emailController;
+    var passwordController =
+        Provider.of<LocalDBFavProvider>(context, listen: false)
+            .passwordController;
     var existUser = await (await LocalDbService.usersDao)
         .getUserByEmailPassword(emailController.text, passwordController.text);
 
@@ -58,8 +70,12 @@ class _LoginScreenState extends State<LoginScreen> {
       snakeBar(context, "You are already SignIn");
       print("You are already SignIn");
     } else {
-      final userData =
-        Users(email: emailController.text, password: passwordController.text, name: null, phone: null, gender: null);
+      final userData = Users(
+          email: emailController.text,
+          password: passwordController.text,
+          name: "sheeraz",
+          phone: "89365",
+          gender: "male");
       await (await LocalDbService.usersDao).insertUser(userData);
       // ignore: use_build_context_synchronously
       snakeBar(context, "Signup Successfull");
@@ -69,6 +85,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var emailController =
+        Provider.of<LocalDBFavProvider>(context, listen: false).emailController;
+    var passwordController =
+        Provider.of<LocalDBFavProvider>(context, listen: false)
+            .passwordController;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -137,7 +158,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             InkWell(
               onTap: () {
-                _login();
+                _login(context);
               },
               child: Container(
                 height: 50.h,
@@ -186,7 +207,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             InkWell(
               onTap: () {
-                _signUp();
+                _signUp(context);
               },
               child: Container(
                 height: 50.h,

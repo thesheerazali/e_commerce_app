@@ -14,10 +14,10 @@ part 'shop_me_database.g.dart'; // the generated code will be there
 
 @Database(
   version: 1,
-  entities: [Cart, Fav,Users],
+  entities: [Cart, Fav, Users],
 )
 abstract class AppDatabase extends FloorDatabase {
-  static const String dbName = "shop_me_6.db";
+  static const String dbName = "shop_me_7.db";
   CartDao get cartDao;
   FavDao get favDao;
   UsersDao get userdao;
