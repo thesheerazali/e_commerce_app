@@ -59,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
       print("You are already SignIn");
     } else {
       final userData =
-          Users(null, emailController.text, passwordController.text);
+        Users(email: emailController.text, password: passwordController.text, name: null, phone: null, gender: null);
       await (await LocalDbService.usersDao).insertUser(userData);
       // ignore: use_build_context_synchronously
       snakeBar(context, "Signup Successfull");

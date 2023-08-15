@@ -3,11 +3,11 @@ import 'package:floor/floor.dart';
 @entity
 class Fav {
   @primaryKey
-  final int id;
+  final int? productId;
 
-  final String title, type, image;
+  final String title, type, image, uid;
   final double price;
-  final int quaintity;
+   int quaintity;
 
-  Fav(this.id, this.title, this.type, this.image, this.price, this.quaintity);
+    Fav({required this.productId,required this.title,required this.type,required this.image,required this.price,required this.quaintity, required this.uid});
 }

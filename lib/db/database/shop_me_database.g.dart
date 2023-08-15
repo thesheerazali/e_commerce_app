@@ -91,9 +91,9 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Cart` (`productId` INTEGER NOT NULL, `title` TEXT NOT NULL, `type` TEXT NOT NULL, `image` TEXT NOT NULL, `uid` TEXT NOT NULL, `price` REAL NOT NULL, `quaintity` INTEGER NOT NULL, PRIMARY KEY (`productId`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Fav` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `type` TEXT NOT NULL, `image` TEXT NOT NULL, `price` REAL NOT NULL, `quaintity` INTEGER NOT NULL, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `Fav` (`productId` INTEGER, `title` TEXT NOT NULL, `type` TEXT NOT NULL, `image` TEXT NOT NULL, `uid` TEXT NOT NULL, `price` REAL NOT NULL, `quaintity` INTEGER NOT NULL, PRIMARY KEY (`productId`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `email` TEXT NOT NULL, `password` TEXT NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `Users` (`email` TEXT NOT NULL, `password` TEXT NOT NULL, `name` TEXT, `phone` TEXT, `gender` TEXT, PRIMARY KEY (`email`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -251,34 +251,37 @@ class _$FavDao extends FavDao {
             database,
             'Fav',
             (Fav item) => <String, Object?>{
-                  'id': item.id,
+                  'productId': item.productId,
                   'title': item.title,
                   'type': item.type,
                   'image': item.image,
+                  'uid': item.uid,
                   'price': item.price,
                   'quaintity': item.quaintity
                 }),
         _favUpdateAdapter = UpdateAdapter(
             database,
             'Fav',
-            ['id'],
+            ['productId'],
             (Fav item) => <String, Object?>{
-                  'id': item.id,
+                  'productId': item.productId,
                   'title': item.title,
                   'type': item.type,
                   'image': item.image,
+                  'uid': item.uid,
                   'price': item.price,
                   'quaintity': item.quaintity
                 }),
         _favDeletionAdapter = DeletionAdapter(
             database,
             'Fav',
-            ['id'],
+            ['productId'],
             (Fav item) => <String, Object?>{
-                  'id': item.id,
+                  'productId': item.productId,
                   'title': item.title,
                   'type': item.type,
                   'image': item.image,
+                  'uid': item.uid,
                   'price': item.price,
                   'quaintity': item.quaintity
                 });
@@ -299,25 +302,45 @@ class _$FavDao extends FavDao {
   Future<List<Fav>> getAllFavData() async {
     return _queryAdapter.queryList('SELECT * FROM fav',
         mapper: (Map<String, Object?> row) => Fav(
-            row['id'] as int,
-            row['title'] as String,
-            row['type'] as String,
-            row['image'] as String,
-            row['price'] as double,
-            row['quaintity'] as int));
+            productId: row['productId'] as int?,
+            title: row['title'] as String,
+            type: row['type'] as String,
+            image: row['image'] as String,
+            price: row['price'] as double,
+            quaintity: row['quaintity'] as int,
+            uid: row['uid'] as String));
   }
 
   @override
   Future<List<Fav>> clearCartByUId(int id) async {
-    return _queryAdapter.queryList('SELECT * FROM cart WHERE id =?1',
+    return _queryAdapter.queryList('SELECT * FROM fav WHERE id =?1',
         mapper: (Map<String, Object?> row) => Fav(
-            row['id'] as int,
-            row['title'] as String,
-            row['type'] as String,
-            row['image'] as String,
-            row['price'] as double,
-            row['quaintity'] as int),
+            productId: row['productId'] as int?,
+            title: row['title'] as String,
+            type: row['type'] as String,
+            image: row['image'] as String,
+            price: row['price'] as double,
+            quaintity: row['quaintity'] as int,
+            uid: row['uid'] as String),
         arguments: [id]);
+  }
+
+  @override
+  Future<Fav?> getFavInDataByUid(
+    String uid,
+    int id,
+  ) async {
+    return _queryAdapter.query(
+        'SELECT * FROM fav WHERE uid=?1 AND productId=?2',
+        mapper: (Map<String, Object?> row) => Fav(
+            productId: row['productId'] as int?,
+            title: row['title'] as String,
+            type: row['type'] as String,
+            image: row['image'] as String,
+            price: row['price'] as double,
+            quaintity: row['quaintity'] as int,
+            uid: row['uid'] as String),
+        arguments: [uid, id]);
   }
 
   @override
@@ -345,9 +368,11 @@ class _$UsersDao extends UsersDao {
             database,
             'Users',
             (Users item) => <String, Object?>{
-                  'id': item.id,
                   'email': item.email,
-                  'password': item.password
+                  'password': item.password,
+                  'name': item.name,
+                  'phone': item.phone,
+                  'gender': item.gender
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -365,8 +390,12 @@ class _$UsersDao extends UsersDao {
   ) async {
     return _queryAdapter.query(
         'SELECT * FROM users WHERE email = ?1 AND password = ?2',
-        mapper: (Map<String, Object?> row) => Users(row['id'] as int?,
-            row['email'] as String, row['password'] as String),
+        mapper: (Map<String, Object?> row) => Users(
+            email: row['email'] as String,
+            password: row['password'] as String,
+            name: row['name'] as String?,
+            phone: row['phone'] as String?,
+            gender: row['gender'] as String?),
         arguments: [email, password]);
   }
 

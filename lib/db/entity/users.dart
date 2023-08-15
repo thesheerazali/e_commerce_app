@@ -2,13 +2,20 @@ import 'package:floor/floor.dart';
 
 @entity
 class Users {
-  @PrimaryKey(autoGenerate: true)
-  final int? id;
-
+  @primaryKey
   final String email;
-  final String password;
 
-  Users(this.id, this.email, this.password);
+  final String password;
+  final String? name;
+  final String? phone;
+  final String? gender;
+
+  Users(
+      {required this.email,
+      required this.password,
+      required this.name,
+      required this.phone,
+      required this.gender});
 }
 
 // import 'package:flutter/material.dart';

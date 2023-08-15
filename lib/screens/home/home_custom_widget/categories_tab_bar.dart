@@ -243,42 +243,58 @@ class _CategorieTabBarState extends State<CategorieTabBar>
                             borderRadius: BorderRadius.circular(50),
                           ),
                           child: IconButton(
-                            onPressed: () async {
-                              if (value.getfavItems.isNotEmpty) {
-                                value.isFav = false;
-                              } else {
-                                value.isFav = true;
-                              }
+                              onPressed: () async {
+                                try {
+                                  var favProducts =
+                                      await (await LocalDbService.favDao)
+                                          .getFavInDataByUid(
+                                              "NOT_SIGN_IN", data[index].id);
+                                  if (favProducts != null) {
+                                    favProducts.quaintity += 1;
 
-                              Fav addfav = Fav(
-                                  data[index].id += 1,
-                                  data[index].title,
-                                  data[index].type,
-                                  data[index].image,
-                                  data[index].price,
-                                  data[index].id);
+                                    await (await LocalDbService.favDao)
+                                        .updateContacts(favProducts);
+                                    snakeBar(context,
+                                        "Update items in Cart successfully");
+                                  } else {
+                                    Fav addfav = Fav(
+                                        productId: null,
+                                        title: data[index].title,
+                                        type: data[index].type,
+                                        image: data[index].image,
+                                        price: data[index].price,
+                                        quaintity: data[index].id,
+                                        uid: "NOT_SIGN_IN");
 
-                              value.addToFav(addfav);
-                              value.fetchAllContacts();
-                              print(value.getById(index));
-                            },
-                            icon: value.getById(index)
-                                ? const Icon(
-                                    Icons.favorite_border_outlined,
-                                  )
-                                : const Icon(
-                                    Icons.favorite_sharp,
-                                    color: Colors.red,
-                                  ),
-                          ),
+                                    value.addToFav(addfav);
+                                    value.fetchAllContacts();
+
+                                    snakeBar(
+                                        context, "Add to Fav successfully");
+                                  }
+                                } catch (e) {
+                                  snakeBar(context, e.toString());
+                                }
+                              },
+                              icon: const Icon(
+                                Icons.favorite_border_outlined,
+                              )),
                         ),
-                      ),
+                      )
                     ],
                   ),
                 )
               ],
             ));
       },
+    );
+  }
+
+  void snakeBar(BuildContext context, String s) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(s),
+      ),
     );
   }
 }

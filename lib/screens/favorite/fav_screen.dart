@@ -58,19 +58,15 @@ class _FavScreenState extends State<FavScreen> {
                               subtitle: Text(value.getfavItems[index].title),
                               trailing: IconButton(
                                 onPressed: () {
-                                  if (value.getfavItems.isNotEmpty) {
-                                    value.isFav = true;
-                                  } else {
-                                    value.isFav = false;
-                                  }
-
                                   Fav fav = Fav(
-                                      value.getfavItems[index].id,
-                                      value.getfavItems[index].title,
-                                      value.getfavItems[index].type,
-                                      value.getfavItems[index].image,
-                                      value.getfavItems[index].price,
-                                      value.getfavItems[index].id!);
+                                    uid: "NOT_SIGN_IN",
+                                      productId: value.getfavItems[index].productId,
+                                      title: value.getfavItems[index].title,
+                                      type: value.getfavItems[index].type,
+                                      image: value.getfavItems[index].image,
+                                      price: value.getfavItems[index].price,
+                                      quaintity:
+                                          value.getfavItems[index].quaintity);
                                   value.deleteItem(fav);
 
                                   value.fetchAllContacts();
