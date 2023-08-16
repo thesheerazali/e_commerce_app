@@ -63,7 +63,7 @@ class _CartScreenState extends State<CartScreen> {
                   if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else if (!snapshot.hasData || snapshot.data == null) {
-                    return Text('User not found.');
+                    return const Text('User not found.');
                   } else {
                     final email = snapshot.data!;
                     return Expanded(
@@ -108,7 +108,7 @@ class _CartScreenState extends State<CartScreen> {
 
                                     value.fetchAllDataofCart();
                                   },
-                                  icon: Icon(Icons.remove_circle),
+                                  icon: const Icon(Icons.remove_circle),
                                   color: Colors.red,
                                 )),
                           );

@@ -34,7 +34,7 @@ class _SelectPictureState extends State<SelectPicture> {
                     fit: BoxFit.fill),
                 border: currentPictureSelected == 0
                     ? Border.all(
-                        color: Color.fromARGB(255, 87, 83, 83), width: 2)
+                        color: const Color.fromARGB(255, 87, 83, 83), width: 2)
                     : Border.all(color: Colors.white, width: 0),
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -55,7 +55,7 @@ class _SelectPictureState extends State<SelectPicture> {
                     fit: BoxFit.fill),
                 border: currentPictureSelected == 1
                     ? Border.all(
-                        color: Color.fromARGB(255, 87, 83, 83), width: 2)
+                        color: const Color.fromARGB(255, 87, 83, 83), width: 2)
                     : Border.all(color: Colors.white, width: 0),
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -76,7 +76,7 @@ class _SelectPictureState extends State<SelectPicture> {
                     fit: BoxFit.fill),
                 border: currentPictureSelected == 2
                     ? Border.all(
-                        color: Color.fromARGB(255, 87, 83, 83), width: 2)
+                        color: const Color.fromARGB(255, 87, 83, 83), width: 2)
                     : Border.all(color: Colors.white, width: 0),
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -97,7 +97,7 @@ class _SelectPictureState extends State<SelectPicture> {
                     fit: BoxFit.fill),
                 border: currentPictureSelected == 3
                     ? Border.all(
-                        color: Color.fromARGB(255, 87, 83, 83), width: 2)
+                        color: const Color.fromARGB(255, 87, 83, 83), width: 2)
                     : Border.all(color: Colors.white, width: 0),
                 borderRadius: BorderRadius.circular(10),
               ),

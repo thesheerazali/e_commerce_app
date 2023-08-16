@@ -27,7 +27,7 @@ class GoogleFacebookSignUpButton extends StatelessWidget {
           child: Container(
             height: 50.h,
             width: 155.w,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage("assets/auth/icons/facebook.png"))),
           ),

@@ -20,6 +20,6 @@ abstract class UsersDao {
 
   
 
-  @insert
+  @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertUser(Users users);
 }

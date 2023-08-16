@@ -1,4 +1,4 @@
-import 'dart:math';
+
 
 import 'package:e_commerce_app/provider/local_db_fav_provider.dart';
 import 'package:flutter/material.dart';
@@ -45,14 +45,14 @@ class _LoginScreenState extends State<LoginScreen> {
               builder: (context) => const MainPage(),
             ));
       });
-      print(loginStatus);
+     
       // Fetch user-specific data using user.id if needed
     } else {
       setState(() {
         loginStatus = 'Invalid login credentials';
         snakeBar(context, loginStatus);
       });
-      print(loginStatus);
+    
     }
   }
 
@@ -68,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (existUser?.email == emailController.text) {
       // ignore: use_build_context_synchronously
       snakeBar(context, "You are already SignIn");
-      print("You are already SignIn");
+      debugPrint("You are already SignIn");
     } else {
       final userData = Users(
           email: emailController.text,
@@ -79,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
       await (await LocalDbService.usersDao).insertUser(userData);
       // ignore: use_build_context_synchronously
       snakeBar(context, "Signup Successfull");
-      print("Signup Successfull");
+      debugPrint("Signup Successfull");
     }
   }
 

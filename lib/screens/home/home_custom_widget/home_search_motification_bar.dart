@@ -55,7 +55,7 @@ class _SearchNotifBarState extends State<SearchNotifBar> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => FavScreen(),
+                          builder: (context) => const FavScreen(),
                         ));
                   },
                   icon: const Icon(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../auth/constants/colors.dart';
+
 import 'home_custom_widget/ads_container.dart';
 import 'home_custom_widget/categories_tab_bar.dart';
 import 'home_custom_widget/home_search_motification_bar.dart';

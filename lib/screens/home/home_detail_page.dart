@@ -193,7 +193,7 @@ class _DetailPageState extends State<DetailPage> {
     Size size = MediaQuery.of(context).size;
     return BottomAppBar(
       height: size.height * .08,
-      color: Color(0xfffe6d29),
+      color: const Color(0xfffe6d29),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: size.width * .075),
         child: Row(
@@ -225,10 +225,12 @@ class _DetailPageState extends State<DetailPage> {
                     var emailController =
                         Provider.of<LocalDBFavProvider>(context, listen: false)
                             .emailController;
+
                     try {
-                      var cartProducts = await (await LocalDbService.cartDao)
+                      Cart? cartProducts = await (await LocalDbService.cartDao)
                           .getCartInDataByUid(
                               emailController.text, widget.productdata.id);
+
                       if (cartProducts != null) {
                         // cartProducts.quaintity += 1;
 
@@ -257,7 +259,7 @@ class _DetailPageState extends State<DetailPage> {
                       }
                     } catch (e) {
                       snakeBar(context, e.toString());
-                      print(e.toString());
+                      debugPrint(e.toString());
                     }
                   },
                   style: const ButtonStyle(

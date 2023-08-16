@@ -249,26 +249,25 @@ class _CategorieTabBarState extends State<CategorieTabBar>
                                             listen: false)
                                         .emailController;
                                 try {
-                                  var favProducts = await (await LocalDbService
-                                          .favDao)
-                                      .getFavInDataByUid(
-                                          emailController.text, data[index].id);
-                                  if (favProducts != null) {
-                                    // favProducts.quaintity += 1;
+                                  var existingFavorite =
+                                      await (await LocalDbService.favDao)
+                                          .getFavInDataByUid(
+                                              emailController.text,
+                                              data[index].id);
 
-                                    // await (await LocalDbService.favDao)
-                                    //     .updateContacts(favProducts);
+                                  if (existingFavorite != null) {
+                                    // Update the existing favorite item
+                                    // You can modify existingFavorite properties if needed
+                                    value.addToFav(existingFavorite);
                                     snakeBar(
                                         context, " Already Added successfully");
                                   } else {
                                     String? emails = await (await LocalDbService
                                             .usersDao)
                                         .getEmailByEmail(emailController.text);
-
-                                    print(emails);
-
-                                    Fav addfav = Fav(
-                                        productId: null,
+                                    // Insert new favorite item
+                                    final newFavorite = Fav(
+                                        productId: data[index].id,
                                         title: data[index].title,
                                         type: data[index].type,
                                         image: data[index].image,
@@ -276,12 +275,38 @@ class _CategorieTabBarState extends State<CategorieTabBar>
                                         quaintity: 1,
                                         uid: emails!);
 
-                                    value.addToFav(addfav);
+                                    value.addToFav(newFavorite);
                                     value.fetchAllContacts();
-
                                     snakeBar(
                                         context, "Add to Fav successfully");
                                   }
+
+                                  // if (favProducts != null) {
+                                  //   // favProducts.quaintity += 1;
+
+                                  //   // await (await LocalDbService.favDao)
+                                  //   //     .updateContacts(favProducts);
+                                  // snakeBar(
+                                  //     context, " Already Added successfully");
+                                  // } else {
+
+                                  //   print(emails);
+
+                                  // Fav addfav = Fav(
+                                  //     productId: null,
+                                  //     title: data[index].title,
+                                  //     type: data[index].type,
+                                  //     image: data[index].image,
+                                  //     price: data[index].price,
+                                  //     quaintity: 1,
+                                  //     uid: emails!);
+
+                                  //   value.addToFav(addfav);
+                                  // value.fetchAllContacts();
+
+                                  // snakeBar(
+                                  //     context, "Add to Fav successfully");
+                                  // }
                                 } catch (e) {
                                   snakeBar(context, e.toString());
                                 }

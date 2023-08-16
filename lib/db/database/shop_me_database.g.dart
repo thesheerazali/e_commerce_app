@@ -89,9 +89,9 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Cart` (`productId` INTEGER NOT NULL, `title` TEXT NOT NULL, `type` TEXT NOT NULL, `image` TEXT NOT NULL, `uid` TEXT NOT NULL, `price` REAL NOT NULL, `quaintity` INTEGER NOT NULL, PRIMARY KEY (`productId`))');
+            'CREATE TABLE IF NOT EXISTS `Cart` (`productId` INTEGER, `title` TEXT NOT NULL, `type` TEXT NOT NULL, `image` TEXT NOT NULL, `uid` TEXT NOT NULL, `price` REAL NOT NULL, `quaintity` INTEGER NOT NULL, PRIMARY KEY (`productId`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Fav` (`productId` INTEGER, `title` TEXT NOT NULL, `type` TEXT NOT NULL, `image` TEXT NOT NULL, `uid` TEXT NOT NULL, `price` REAL NOT NULL, `quaintity` INTEGER NOT NULL, PRIMARY KEY (`productId`))');
+            'CREATE TABLE IF NOT EXISTS `Fav` (`productId` INTEGER NOT NULL, `uid` TEXT NOT NULL, `title` TEXT, `type` TEXT, `image` TEXT, `price` REAL, `quaintity` INTEGER, PRIMARY KEY (`productId`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Users` (`email` TEXT NOT NULL, `password` TEXT NOT NULL, `name` TEXT, `phone` TEXT, `gender` TEXT, PRIMARY KEY (`email`))');
 
@@ -177,7 +177,7 @@ class _$CartDao extends CartDao {
   Future<List<Cart>> getAllFavData() async {
     return _queryAdapter.queryList('SELECT * FROM cart',
         mapper: (Map<String, Object?> row) => Cart(
-            productId: row['productId'] as int,
+            productId: row['productId'] as int?,
             title: row['title'] as String,
             type: row['type'] as String,
             image: row['image'] as String,
@@ -190,7 +190,7 @@ class _$CartDao extends CartDao {
   Future<List<Cart>> getCartForUser(String uid) async {
     return _queryAdapter.queryList('SELECT * FROM cart WHERE uid=?1',
         mapper: (Map<String, Object?> row) => Cart(
-            productId: row['productId'] as int,
+            productId: row['productId'] as int?,
             title: row['title'] as String,
             type: row['type'] as String,
             image: row['image'] as String,
@@ -208,7 +208,7 @@ class _$CartDao extends CartDao {
     return _queryAdapter.query(
         'SELECT * FROM cart WHERE uid=?1 AND productId=?2',
         mapper: (Map<String, Object?> row) => Cart(
-            productId: row['productId'] as int,
+            productId: row['productId'] as int?,
             title: row['title'] as String,
             type: row['type'] as String,
             image: row['image'] as String,
@@ -222,7 +222,7 @@ class _$CartDao extends CartDao {
   Future<List<Cart>> clearCartByUId(String uid) async {
     return _queryAdapter.queryList('DELETE FROM cart WHERE uid =?1',
         mapper: (Map<String, Object?> row) => Cart(
-            productId: row['productId'] as int,
+            productId: row['productId'] as int?,
             title: row['title'] as String,
             type: row['type'] as String,
             image: row['image'] as String,
@@ -240,7 +240,7 @@ class _$CartDao extends CartDao {
 
   @override
   Future<void> addContacts(Cart cart) async {
-    await _cartInsertionAdapter.insert(cart, OnConflictStrategy.abort);
+    await _cartInsertionAdapter.insert(cart, OnConflictStrategy.replace);
   }
 
   @override
@@ -265,10 +265,10 @@ class _$FavDao extends FavDao {
             'Fav',
             (Fav item) => <String, Object?>{
                   'productId': item.productId,
+                  'uid': item.uid,
                   'title': item.title,
                   'type': item.type,
                   'image': item.image,
-                  'uid': item.uid,
                   'price': item.price,
                   'quaintity': item.quaintity
                 }),
@@ -278,10 +278,10 @@ class _$FavDao extends FavDao {
             ['productId'],
             (Fav item) => <String, Object?>{
                   'productId': item.productId,
+                  'uid': item.uid,
                   'title': item.title,
                   'type': item.type,
                   'image': item.image,
-                  'uid': item.uid,
                   'price': item.price,
                   'quaintity': item.quaintity
                 }),
@@ -291,10 +291,10 @@ class _$FavDao extends FavDao {
             ['productId'],
             (Fav item) => <String, Object?>{
                   'productId': item.productId,
+                  'uid': item.uid,
                   'title': item.title,
                   'type': item.type,
                   'image': item.image,
-                  'uid': item.uid,
                   'price': item.price,
                   'quaintity': item.quaintity
                 });
@@ -315,12 +315,12 @@ class _$FavDao extends FavDao {
   Future<List<Fav>> getAllFavData() async {
     return _queryAdapter.queryList('SELECT * FROM fav',
         mapper: (Map<String, Object?> row) => Fav(
-            productId: row['productId'] as int?,
-            title: row['title'] as String,
-            type: row['type'] as String,
-            image: row['image'] as String,
-            price: row['price'] as double,
-            quaintity: row['quaintity'] as int,
+            productId: row['productId'] as int,
+            title: row['title'] as String?,
+            type: row['type'] as String?,
+            image: row['image'] as String?,
+            price: row['price'] as double?,
+            quaintity: row['quaintity'] as int?,
             uid: row['uid'] as String));
   }
 
@@ -328,12 +328,12 @@ class _$FavDao extends FavDao {
   Future<List<Fav>> clearCartByUId(int id) async {
     return _queryAdapter.queryList('SELECT * FROM fav WHERE id =?1',
         mapper: (Map<String, Object?> row) => Fav(
-            productId: row['productId'] as int?,
-            title: row['title'] as String,
-            type: row['type'] as String,
-            image: row['image'] as String,
-            price: row['price'] as double,
-            quaintity: row['quaintity'] as int,
+            productId: row['productId'] as int,
+            title: row['title'] as String?,
+            type: row['type'] as String?,
+            image: row['image'] as String?,
+            price: row['price'] as double?,
+            quaintity: row['quaintity'] as int?,
             uid: row['uid'] as String),
         arguments: [id]);
   }
@@ -342,12 +342,12 @@ class _$FavDao extends FavDao {
   Future<List<Fav>> getFavoritesForUser(String uid) async {
     return _queryAdapter.queryList('SELECT * FROM fav WHERE uid = ?1',
         mapper: (Map<String, Object?> row) => Fav(
-            productId: row['productId'] as int?,
-            title: row['title'] as String,
-            type: row['type'] as String,
-            image: row['image'] as String,
-            price: row['price'] as double,
-            quaintity: row['quaintity'] as int,
+            productId: row['productId'] as int,
+            title: row['title'] as String?,
+            type: row['type'] as String?,
+            image: row['image'] as String?,
+            price: row['price'] as double?,
+            quaintity: row['quaintity'] as int?,
             uid: row['uid'] as String),
         arguments: [uid]);
   }
@@ -360,19 +360,19 @@ class _$FavDao extends FavDao {
     return _queryAdapter.query(
         'SELECT * FROM fav WHERE uid=?1 AND productId=?2',
         mapper: (Map<String, Object?> row) => Fav(
-            productId: row['productId'] as int?,
-            title: row['title'] as String,
-            type: row['type'] as String,
-            image: row['image'] as String,
-            price: row['price'] as double,
-            quaintity: row['quaintity'] as int,
+            productId: row['productId'] as int,
+            title: row['title'] as String?,
+            type: row['type'] as String?,
+            image: row['image'] as String?,
+            price: row['price'] as double?,
+            quaintity: row['quaintity'] as int?,
             uid: row['uid'] as String),
         arguments: [uid, id]);
   }
 
   @override
   Future<void> addContacts(Fav fav) async {
-    await _favInsertionAdapter.insert(fav, OnConflictStrategy.abort);
+    await _favInsertionAdapter.insert(fav, OnConflictStrategy.replace);
   }
 
   @override
@@ -453,6 +453,6 @@ class _$UsersDao extends UsersDao {
 
   @override
   Future<void> insertUser(Users users) async {
-    await _usersInsertionAdapter.insert(users, OnConflictStrategy.abort);
+    await _usersInsertionAdapter.insert(users, OnConflictStrategy.replace);
   }
 }

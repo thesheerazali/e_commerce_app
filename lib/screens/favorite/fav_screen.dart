@@ -1,4 +1,4 @@
-import 'package:e_commerce_app/db/entity/users.dart';
+
 import 'package:e_commerce_app/db/services/localdb_services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -55,7 +55,7 @@ class _FavScreenState extends State<FavScreen> {
                     if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     } else if (!snapshot.hasData || snapshot.data == null) {
-                      return Text('User not found.');
+                      return const Text('User not found.');
                     } else {
                       final email = snapshot.data!;
                       return Expanded(
@@ -77,10 +77,10 @@ class _FavScreenState extends State<FavScreen> {
                                   leading: CircleAvatar(
                                     backgroundColor: const Color(0xff6ae792),
                                     backgroundImage:
-                                        AssetImage(email[index]!.image),
+                                        AssetImage(email[index]!.image!),
                                   ),
-                                  title: Text(email[index]!.title),
-                                  subtitle: Text(email[index]!.title),
+                                  title: Text(email[index]!.title!),
+                                  subtitle: Text(email[index]!.title!),
                                   trailing: IconButton(
                                     onPressed: () {
                                       var value =
@@ -100,7 +100,7 @@ class _FavScreenState extends State<FavScreen> {
 
                                       value.fetchAllContacts();
                                     },
-                                    icon: Icon(Icons.remove_circle),
+                                    icon: const Icon(Icons.remove_circle),
                                     color: Colors.red,
                                   )),
                             );

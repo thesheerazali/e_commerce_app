@@ -21,7 +21,7 @@ abstract class FavDao {
   @Query("SELECT * FROM fav WHERE uid=:uid AND productId=:id")
   Future<Fav?> getFavInDataByUid(String uid, int id);
 
-  @insert
+  @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> addContacts(Fav fav);
   @update
   Future<void> updateContacts(Fav fav);

@@ -1,4 +1,4 @@
-import 'package:floor/floor.dart';
+
 import 'package:flutter/material.dart';
 
 import '../db/entity/fav.dart';
@@ -21,19 +21,11 @@ class LocalDBFavProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // datafectFromEmail() async {
-  //   // var emails = await (await LocalDbService.usersDao)
-  //   //     .getEmailByEmail(emailController.text);
-
-  // favItemsbyEmail =  (await (await LocalDbService.favDao)
-  //       .getUserDataByEmail(emailController.text)) as List<Fav>;
-
-  //   notifyListeners();
-  // }
+ 
 
   getById(index) async {
     await (await LocalDbService.favDao).getAllFavData();
-    ;
+    
   }
 
   addToFav(Fav fav) async {
