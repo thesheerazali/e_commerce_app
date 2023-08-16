@@ -4,8 +4,12 @@ import '../entity/cart.dart';
 
 @dao
 abstract class CartDao {
+
+  @Query("SELECT * FROM cart")
+  Future<List<Cart>> getAllFavData();
+  
   @Query("SELECT * FROM cart WHERE uid=:uid")
-  Future<List<Cart>> getAllCartDataByUid(String uid);
+  Future<List<Cart>> getCartForUser(String uid);
 
   @Query("SELECT * FROM cart WHERE uid=:uid AND productId=:id")
   Future<Cart?> getCartInDataByUid(String uid, int id);

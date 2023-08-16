@@ -1,8 +1,6 @@
+import 'package:e_commerce_app/provider/local_db_fav_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-
-
 
 import '../../db/entity/cart.dart';
 import '../../db/services/localdb_services.dart';
@@ -224,34 +222,42 @@ class _DetailPageState extends State<DetailPage> {
               child: Consumer<LocalDBCartProvider>(
                 builder: (context, value, child) => ElevatedButton(
                   onPressed: () async {
+                    var emailController =
+                        Provider.of<LocalDBFavProvider>(context, listen: false)
+                            .emailController;
                     try {
                       var cartProducts = await (await LocalDbService.cartDao)
                           .getCartInDataByUid(
-                              "NOT_SIGN_IN", widget.productdata.id);
+                              emailController.text, widget.productdata.id);
                       if (cartProducts != null) {
-                        cartProducts.quaintity += 1;
+                        // cartProducts.quaintity += 1;
 
-                        await (await LocalDbService.cartDao)
-                            .updateContacts(cartProducts);
-                        snakeBar(context, "Update items in Cart successfully");
+                        // await (await LocalDbService.cartDao)
+                        //     .updateContacts(cartProducts);
+                        snakeBar(context, " Already Added successfully");
                       } else {
+                        String? emails = await (await LocalDbService.usersDao)
+                            .getEmailByEmail(emailController.text);
+
+                        print(emails);
                         Cart cart = Cart(
-                          productId: widget.productdata.id,
+                          productId: null,
                           title: widget.productdata.title,
                           type: widget.productdata.type,
                           image: widget.productdata.image,
                           price: widget.productdata.price,
                           quaintity: 1,
-                          uid: "NOT_SIGN_IN",
+                          uid: emails!,
                         );
 
                         value.addToCart(cart);
-                        value.fetchAllContacts();
+                        value.fetchAllDataofCart();
 
                         snakeBar(context, "Add to Cart successfully");
                       }
                     } catch (e) {
                       snakeBar(context, e.toString());
+                      print(e.toString());
                     }
                   },
                   style: const ButtonStyle(

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
 import '../db/entity/cart.dart';
@@ -7,8 +8,11 @@ class LocalDBCartProvider extends ChangeNotifier {
   List<Cart> cartItems = [];
   List<Cart> get getcartItems => cartItems;
 
-  fetchAllContacts() async {
-    cartItems = await (await LocalDbService.cartDao).getAllCartDataByUid("NOT_SIGN_IN");
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  fetchAllDataofCart() async {
+    cartItems = await (await LocalDbService.cartDao).getAllFavData();
 
     notifyListeners();
   }
@@ -18,16 +22,8 @@ class LocalDBCartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  deleteItem(index) async {
-    (await LocalDbService.cartDao).deleteContacts(Cart(
-      productId: getcartItems[index].productId,
-      title: getcartItems[index].title,
-      type: getcartItems[index].type,
-      image: getcartItems[index].image,
-      price: getcartItems[index].price,
-      quaintity: getcartItems[index].quaintity,
-      uid: getcartItems[index].uid,
-    ));
+  deleteItem(Cart cart) async {
+    (await LocalDbService.cartDao).deleteContacts(cart);
 
     notifyListeners();
   }

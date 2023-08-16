@@ -273,7 +273,7 @@ class _CategorieTabBarState extends State<CategorieTabBar>
                                         type: data[index].type,
                                         image: data[index].image,
                                         price: data[index].price,
-                                        quaintity: data[index].id,
+                                        quaintity: 1,
                                         uid: emails!);
 
                                     value.addToFav(addfav);

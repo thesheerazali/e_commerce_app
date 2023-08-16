@@ -10,9 +10,11 @@ abstract class FavDao {
   @Query("SELECT * FROM fav WHERE id =:id")
   Future<List<Fav>> clearCartByUId(int id);
 
-  @Query('SELECT * FROM fav WHERE uid = :uid')
-  Future<Fav?> getUserDataByEmail(String uid);
+  // @Query('SELECT * FROM fav WHERE uid = :uid')
+  // Future<Fav?> getUserDataByEmail(String uid);
 
+  @Query('SELECT * FROM fav WHERE uid = :uid')
+  Future<List<Fav>> getFavoritesForUser(String uid);
   // @Query('SELECT uid FROM fav WHERE uid = :uid')
   // Future<String?> getEmailByEmail(String email);
 

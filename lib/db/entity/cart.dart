@@ -3,7 +3,7 @@ import 'package:floor/floor.dart';
 @entity
 class Cart {
   @primaryKey
-   final int productId;
+   final int? productId;
 
   final String title, type, image , uid;
    double price;

@@ -174,7 +174,20 @@ class _$CartDao extends CartDao {
   final DeletionAdapter<Cart> _cartDeletionAdapter;
 
   @override
-  Future<List<Cart>> getAllCartDataByUid(String uid) async {
+  Future<List<Cart>> getAllFavData() async {
+    return _queryAdapter.queryList('SELECT * FROM cart',
+        mapper: (Map<String, Object?> row) => Cart(
+            productId: row['productId'] as int,
+            title: row['title'] as String,
+            type: row['type'] as String,
+            image: row['image'] as String,
+            price: row['price'] as double,
+            quaintity: row['quaintity'] as int,
+            uid: row['uid'] as String));
+  }
+
+  @override
+  Future<List<Cart>> getCartForUser(String uid) async {
     return _queryAdapter.queryList('SELECT * FROM cart WHERE uid=?1',
         mapper: (Map<String, Object?> row) => Cart(
             productId: row['productId'] as int,
@@ -326,8 +339,8 @@ class _$FavDao extends FavDao {
   }
 
   @override
-  Future<Fav?> getUserDataByEmail(String uid) async {
-    return _queryAdapter.query('SELECT * FROM fav WHERE uid = ?1',
+  Future<List<Fav>> getFavoritesForUser(String uid) async {
+    return _queryAdapter.queryList('SELECT * FROM fav WHERE uid = ?1',
         mapper: (Map<String, Object?> row) => Fav(
             productId: row['productId'] as int?,
             title: row['title'] as String,
@@ -417,6 +430,18 @@ class _$UsersDao extends UsersDao {
   Future<List<String>> getAllUserEmails() async {
     return _queryAdapter.queryList('SELECT email FROM users',
         mapper: (Map<String, Object?> row) => row.values.first as String);
+  }
+
+  @override
+  Future<Users?> getUserByEmail(String email) async {
+    return _queryAdapter.query('SELECT * FROM users WHERE email = ?1',
+        mapper: (Map<String, Object?> row) => Users(
+            email: row['email'] as String,
+            password: row['password'] as String,
+            name: row['name'] as String?,
+            phone: row['phone'] as String?,
+            gender: row['gender'] as String?),
+        arguments: [email]);
   }
 
   @override

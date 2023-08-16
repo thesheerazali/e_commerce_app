@@ -17,14 +17,15 @@ class FavScreen extends StatefulWidget {
 }
 
 class _FavScreenState extends State<FavScreen> {
-  Future<Fav?> datafectFromEmail() async {
-    var value = Provider.of<LocalDBFavProvider>(context);
-
+  Future<List<Fav>> datafectFromEmail() async {
     // var emails = await (await LocalDbService.usersDao)
     //     .getEmailByEmail(emailController.text);
+    var value = Provider.of<LocalDBFavProvider>(context);
 
-    var email =
-        await (await LocalDbService.favDao).getUserDataByEmail("sheeraz11");
+    var email = await (await LocalDbService.favDao)
+        .getFavoritesForUser(value.emailController.text);
+
+    value.fetchAllContacts();
 
     return email;
   }
@@ -48,71 +49,63 @@ class _FavScreenState extends State<FavScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                // Consumer<LocalDBFavProvider>(
-                //   builder: (context, value, child) => Expanded(
-                //     child: ListView.builder(
-                //       itemCount: value.getfavItems.length,
-                //       itemBuilder: (context, index) {
-                //         return Padding(
-                //           padding:
-                //               EdgeInsets.symmetric(vertical: size.width * .02),
-                //           child: ListTile(
-                //               shape: RoundedRectangleBorder(
-                //                 //<-- SEE HERE
-                //                 side: const BorderSide(
-                //                   width: 2,
-                //                   color: Color.fromARGB(255, 231, 228, 228),
-                //                 ),
-                //                 borderRadius: BorderRadius.circular(20),
-                //               ),
-                //               leading: CircleAvatar(
-                //                 backgroundColor: const Color(0xff6ae792),
-                //                 backgroundImage:
-                //                     AssetImage(value.getfavItems[index].image),
-                //               ),
-                //               title: Text(value.getfavItems[index].title),
-                //               subtitle: Text(value.getfavItems[index].title),
-                //               trailing: IconButton(
-                //                 onPressed: () {
-                //                   Fav fav = Fav(
-                //                       uid: "NOT_SIGN_IN",
-                //                       productId:
-                //                           value.getfavItems[index].productId,
-                //                       title: value.getfavItems[index].title,
-                //                       type: value.getfavItems[index].type,
-                //                       image: value.getfavItems[index].image,
-                //                       price: value.getfavItems[index].price,
-                //                       quaintity:
-                //                           value.getfavItems[index].quaintity);
-                //                   value.deleteItem(fav);
-
-                //                   value.fetchAllContacts();
-                //                 },
-                //                 icon: Icon(Icons.remove_circle),
-                //                 color: Colors.red,
-                //               )),
-                //         );
-                //       },
-                //     ),
-                //   ),
-                // ),
-
-                FutureBuilder<Fav?>(
+                FutureBuilder<List<Fav?>>(
                   future: datafectFromEmail(),
                   builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator();
-                    } else if (snapshot.hasError) {
+                    if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     } else if (!snapshot.hasData || snapshot.data == null) {
                       return Text('User not found.');
                     } else {
                       final email = snapshot.data!;
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(email.title),
-                        ],
+                      return Expanded(
+                        child: ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: size.width * .02),
+                              child: ListTile(
+                                  shape: RoundedRectangleBorder(
+                                    //<-- SEE HERE
+                                    side: const BorderSide(
+                                      width: 2,
+                                      color: Color.fromARGB(255, 231, 228, 228),
+                                    ),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  leading: CircleAvatar(
+                                    backgroundColor: const Color(0xff6ae792),
+                                    backgroundImage:
+                                        AssetImage(email[index]!.image),
+                                  ),
+                                  title: Text(email[index]!.title),
+                                  subtitle: Text(email[index]!.title),
+                                  trailing: IconButton(
+                                    onPressed: () {
+                                      var value =
+                                          Provider.of<LocalDBFavProvider>(
+                                              context,
+                                              listen: false);
+
+                                      Fav fav = Fav(
+                                          uid: email[index]!.uid,
+                                          productId: email[index]!.productId,
+                                          title: email[index]!.title,
+                                          type: email[index]!.type,
+                                          image: email[index]!.image,
+                                          price: email[index]!.price,
+                                          quaintity: email[index]!.quaintity);
+                                      value.deleteItem(fav);
+
+                                      value.fetchAllContacts();
+                                    },
+                                    icon: Icon(Icons.remove_circle),
+                                    color: Colors.red,
+                                  )),
+                            );
+                          },
+                        ),
                       );
                     }
                   },

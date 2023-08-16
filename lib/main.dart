@@ -63,7 +63,8 @@ class _MainPageState extends State<MainPage> {
     // TODO: implement initState
     super.initState();
 
-    Provider.of<LocalDBCartProvider>(context, listen: false).fetchAllContacts();
+    Provider.of<LocalDBCartProvider>(context, listen: false)
+        .fetchAllDataofCart();
     Provider.of<LocalDBFavProvider>(context, listen: false).fetchAllContacts();
   }
 
