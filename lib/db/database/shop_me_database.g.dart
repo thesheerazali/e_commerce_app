@@ -67,6 +67,10 @@ class _$AppDatabase extends AppDatabase {
 
   UsersDao? _userdaoInstance;
 
+  CategoryDao? _categoryDaoInstance;
+
+  ProductDao? _productDaoInstance;
+
   Future<sqflite.Database> open(
     String path,
     List<Migration> migrations, [
@@ -89,11 +93,15 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Cart` (`productId` INTEGER, `title` TEXT NOT NULL, `type` TEXT NOT NULL, `image` TEXT NOT NULL, `uid` TEXT NOT NULL, `price` REAL NOT NULL, `quaintity` INTEGER NOT NULL, PRIMARY KEY (`productId`))');
+            'CREATE TABLE IF NOT EXISTS `categories` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Fav` (`productId` INTEGER NOT NULL, `uid` TEXT NOT NULL, `title` TEXT, `type` TEXT, `image` TEXT, `price` REAL, `quaintity` INTEGER, PRIMARY KEY (`productId`))');
+            'CREATE TABLE IF NOT EXISTS `products` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT NOT NULL, `size` TEXT NOT NULL, `price` REAL NOT NULL, `discount` REAL NOT NULL, `isFavorite` INTEGER NOT NULL, `image` TEXT NOT NULL, `isInCart` INTEGER NOT NULL, `type` TEXT NOT NULL, `description` TEXT NOT NULL, `categoryId` INTEGER NOT NULL, FOREIGN KEY (`categoryId`) REFERENCES `categories` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Users` (`email` TEXT NOT NULL, `password` TEXT NOT NULL, `name` TEXT, `phone` TEXT, `gender` TEXT, PRIMARY KEY (`email`))');
+            'CREATE TABLE IF NOT EXISTS `Users` (`email` TEXT NOT NULL, `password` TEXT NOT NULL, `name` TEXT NOT NULL, `phone` TEXT NOT NULL, `gender` TEXT NOT NULL, `profilepic` TEXT NOT NULL, `age` TEXT NOT NULL, `country` TEXT NOT NULL, PRIMARY KEY (`email`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `cart_items` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `productId` INTEGER NOT NULL, `quantity` INTEGER NOT NULL, `userEmail` TEXT NOT NULL)');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `favorite_items` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `productId` INTEGER NOT NULL, `userEmail` TEXT NOT NULL)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -115,6 +123,16 @@ class _$AppDatabase extends AppDatabase {
   UsersDao get userdao {
     return _userdaoInstance ??= _$UsersDao(database, changeListener);
   }
+
+  @override
+  CategoryDao get categoryDao {
+    return _categoryDaoInstance ??= _$CategoryDao(database, changeListener);
+  }
+
+  @override
+  ProductDao get productDao {
+    return _productDaoInstance ??= _$ProductDao(database, changeListener);
+  }
 }
 
 class _$CartDao extends CartDao {
@@ -124,41 +142,32 @@ class _$CartDao extends CartDao {
   )   : _queryAdapter = QueryAdapter(database),
         _cartInsertionAdapter = InsertionAdapter(
             database,
-            'Cart',
+            'cart_items',
             (Cart item) => <String, Object?>{
+                  'id': item.id,
                   'productId': item.productId,
-                  'title': item.title,
-                  'type': item.type,
-                  'image': item.image,
-                  'uid': item.uid,
-                  'price': item.price,
-                  'quaintity': item.quaintity
+                  'quantity': item.quantity,
+                  'userEmail': item.userEmail
                 }),
         _cartUpdateAdapter = UpdateAdapter(
             database,
-            'Cart',
-            ['productId'],
+            'cart_items',
+            ['id'],
             (Cart item) => <String, Object?>{
+                  'id': item.id,
                   'productId': item.productId,
-                  'title': item.title,
-                  'type': item.type,
-                  'image': item.image,
-                  'uid': item.uid,
-                  'price': item.price,
-                  'quaintity': item.quaintity
+                  'quantity': item.quantity,
+                  'userEmail': item.userEmail
                 }),
         _cartDeletionAdapter = DeletionAdapter(
             database,
-            'Cart',
-            ['productId'],
+            'cart_items',
+            ['id'],
             (Cart item) => <String, Object?>{
+                  'id': item.id,
                   'productId': item.productId,
-                  'title': item.title,
-                  'type': item.type,
-                  'image': item.image,
-                  'uid': item.uid,
-                  'price': item.price,
-                  'quaintity': item.quaintity
+                  'quantity': item.quantity,
+                  'userEmail': item.userEmail
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -175,72 +184,57 @@ class _$CartDao extends CartDao {
 
   @override
   Future<List<Cart>> getAllFavData() async {
-    return _queryAdapter.queryList('SELECT * FROM cart',
+    return _queryAdapter.queryList('SELECT * FROM cart_items',
         mapper: (Map<String, Object?> row) => Cart(
-            productId: row['productId'] as int?,
-            title: row['title'] as String,
-            type: row['type'] as String,
-            image: row['image'] as String,
-            price: row['price'] as double,
-            quaintity: row['quaintity'] as int,
-            uid: row['uid'] as String));
+            id: row['id'] as int?,
+            productId: row['productId'] as int,
+            quantity: row['quantity'] as int,
+            userEmail: row['userEmail'] as String));
   }
 
   @override
-  Future<List<Cart>> getCartForUser(String uid) async {
-    return _queryAdapter.queryList('SELECT * FROM cart WHERE uid=?1',
+  Future<Cart?> getCartItemByProductId(int productId) async {
+    return _queryAdapter.query('SELECT * FROM cart_items WHERE productId = ?1',
         mapper: (Map<String, Object?> row) => Cart(
-            productId: row['productId'] as int?,
-            title: row['title'] as String,
-            type: row['type'] as String,
-            image: row['image'] as String,
-            price: row['price'] as double,
-            quaintity: row['quaintity'] as int,
-            uid: row['uid'] as String),
-        arguments: [uid]);
+            id: row['id'] as int?,
+            productId: row['productId'] as int,
+            quantity: row['quantity'] as int,
+            userEmail: row['userEmail'] as String),
+        arguments: [productId]);
   }
 
   @override
-  Future<Cart?> getCartInDataByUid(
-    String uid,
-    int id,
+  Future<void> deleteCartItemByProductId(int productId) async {
+    await _queryAdapter.queryNoReturn(
+        'DELETE FROM cart_items WHERE productId = ?1',
+        arguments: [productId]);
+  }
+
+  @override
+  Future<List<Cart>> getCartItemsByUserId(String userEmail) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM cart_items WHERE userEmail = ?1',
+        mapper: (Map<String, Object?> row) => Cart(
+            id: row['id'] as int?,
+            productId: row['productId'] as int,
+            quantity: row['quantity'] as int,
+            userEmail: row['userEmail'] as String),
+        arguments: [userEmail]);
+  }
+
+  @override
+  Future<void> removeCartItem(
+    int productId,
+    String userEmail,
   ) async {
-    return _queryAdapter.query(
-        'SELECT * FROM cart WHERE uid=?1 AND productId=?2',
-        mapper: (Map<String, Object?> row) => Cart(
-            productId: row['productId'] as int?,
-            title: row['title'] as String,
-            type: row['type'] as String,
-            image: row['image'] as String,
-            price: row['price'] as double,
-            quaintity: row['quaintity'] as int,
-            uid: row['uid'] as String),
-        arguments: [uid, id]);
+    await _queryAdapter.queryNoReturn(
+        'DELETE FROM cart_items WHERE productId = ?1 AND userEmail = ?2',
+        arguments: [productId, userEmail]);
   }
 
   @override
-  Future<List<Cart>> clearCartByUId(String uid) async {
-    return _queryAdapter.queryList('DELETE FROM cart WHERE uid =?1',
-        mapper: (Map<String, Object?> row) => Cart(
-            productId: row['productId'] as int?,
-            title: row['title'] as String,
-            type: row['type'] as String,
-            image: row['image'] as String,
-            price: row['price'] as double,
-            quaintity: row['quaintity'] as int,
-            uid: row['uid'] as String),
-        arguments: [uid]);
-  }
-
-  @override
-  Future<void> updateUidCart(String uid) async {
-    await _queryAdapter
-        .queryNoReturn('UPDATE cart SET uid=?1', arguments: [uid]);
-  }
-
-  @override
-  Future<void> addContacts(Cart cart) async {
-    await _cartInsertionAdapter.insert(cart, OnConflictStrategy.replace);
+  Future<void> insertCartItem(Cart catItems) async {
+    await _cartInsertionAdapter.insert(catItems, OnConflictStrategy.ignore);
   }
 
   @override
@@ -262,41 +256,20 @@ class _$FavDao extends FavDao {
   )   : _queryAdapter = QueryAdapter(database),
         _favInsertionAdapter = InsertionAdapter(
             database,
-            'Fav',
+            'favorite_items',
             (Fav item) => <String, Object?>{
+                  'id': item.id,
                   'productId': item.productId,
-                  'uid': item.uid,
-                  'title': item.title,
-                  'type': item.type,
-                  'image': item.image,
-                  'price': item.price,
-                  'quaintity': item.quaintity
-                }),
-        _favUpdateAdapter = UpdateAdapter(
-            database,
-            'Fav',
-            ['productId'],
-            (Fav item) => <String, Object?>{
-                  'productId': item.productId,
-                  'uid': item.uid,
-                  'title': item.title,
-                  'type': item.type,
-                  'image': item.image,
-                  'price': item.price,
-                  'quaintity': item.quaintity
+                  'userEmail': item.userEmail
                 }),
         _favDeletionAdapter = DeletionAdapter(
             database,
-            'Fav',
-            ['productId'],
+            'favorite_items',
+            ['id'],
             (Fav item) => <String, Object?>{
+                  'id': item.id,
                   'productId': item.productId,
-                  'uid': item.uid,
-                  'title': item.title,
-                  'type': item.type,
-                  'image': item.image,
-                  'price': item.price,
-                  'quaintity': item.quaintity
+                  'userEmail': item.userEmail
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -307,81 +280,45 @@ class _$FavDao extends FavDao {
 
   final InsertionAdapter<Fav> _favInsertionAdapter;
 
-  final UpdateAdapter<Fav> _favUpdateAdapter;
-
   final DeletionAdapter<Fav> _favDeletionAdapter;
 
   @override
-  Future<List<Fav>> getAllFavData() async {
-    return _queryAdapter.queryList('SELECT * FROM fav',
+  Future<List<Fav>> getAllFav() async {
+    return _queryAdapter.queryList('SELECT * FROM favorite_items',
         mapper: (Map<String, Object?> row) => Fav(
+            id: row['id'] as int?,
             productId: row['productId'] as int,
-            title: row['title'] as String?,
-            type: row['type'] as String?,
-            image: row['image'] as String?,
-            price: row['price'] as double?,
-            quaintity: row['quaintity'] as int?,
-            uid: row['uid'] as String));
+            userEmail: row['userEmail'] as String));
   }
 
   @override
-  Future<List<Fav>> clearCartByUId(int id) async {
-    return _queryAdapter.queryList('SELECT * FROM fav WHERE id =?1',
+  Future<List<Fav>> getFavoriteItemsByUserId(String userEmail) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM favorite_items WHERE userEmail = ?1',
         mapper: (Map<String, Object?> row) => Fav(
+            id: row['id'] as int?,
             productId: row['productId'] as int,
-            title: row['title'] as String?,
-            type: row['type'] as String?,
-            image: row['image'] as String?,
-            price: row['price'] as double?,
-            quaintity: row['quaintity'] as int?,
-            uid: row['uid'] as String),
-        arguments: [id]);
+            userEmail: row['userEmail'] as String),
+        arguments: [userEmail]);
   }
 
   @override
-  Future<List<Fav>> getFavoritesForUser(String uid) async {
-    return _queryAdapter.queryList('SELECT * FROM fav WHERE uid = ?1',
-        mapper: (Map<String, Object?> row) => Fav(
-            productId: row['productId'] as int,
-            title: row['title'] as String?,
-            type: row['type'] as String?,
-            image: row['image'] as String?,
-            price: row['price'] as double?,
-            quaintity: row['quaintity'] as int?,
-            uid: row['uid'] as String),
-        arguments: [uid]);
-  }
-
-  @override
-  Future<Fav?> getFavInDataByUid(
-    String uid,
-    int id,
+  Future<void> removeFavoriteItem(
+    int productId,
+    String userEmail,
   ) async {
-    return _queryAdapter.query(
-        'SELECT * FROM fav WHERE uid=?1 AND productId=?2',
-        mapper: (Map<String, Object?> row) => Fav(
-            productId: row['productId'] as int,
-            title: row['title'] as String?,
-            type: row['type'] as String?,
-            image: row['image'] as String?,
-            price: row['price'] as double?,
-            quaintity: row['quaintity'] as int?,
-            uid: row['uid'] as String),
-        arguments: [uid, id]);
+    await _queryAdapter.queryNoReturn(
+        'DELETE FROM favorite_items WHERE productId = ?1 AND userEmail = ?2',
+        arguments: [productId, userEmail]);
   }
 
   @override
-  Future<void> addContacts(Fav fav) async {
-    await _favInsertionAdapter.insert(fav, OnConflictStrategy.replace);
+  Future<void> insertFavoriteItem(Fav favoriteItem) async {
+    await _favInsertionAdapter.insert(favoriteItem, OnConflictStrategy.ignore);
   }
 
   @override
-  Future<void> updateContacts(Fav fav) async {
-    await _favUpdateAdapter.update(fav, OnConflictStrategy.abort);
-  }
-
-  @override
-  Future<void> deleteContacts(Fav fav) async {
+  Future<void> deleteFav(Fav fav) async {
     await _favDeletionAdapter.delete(fav);
   }
 }
@@ -399,7 +336,10 @@ class _$UsersDao extends UsersDao {
                   'password': item.password,
                   'name': item.name,
                   'phone': item.phone,
-                  'gender': item.gender
+                  'gender': item.gender,
+                  'profilepic': item.profilepic,
+                  'age': item.age,
+                  'country': item.country
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -420,9 +360,12 @@ class _$UsersDao extends UsersDao {
         mapper: (Map<String, Object?> row) => Users(
             email: row['email'] as String,
             password: row['password'] as String,
-            name: row['name'] as String?,
-            phone: row['phone'] as String?,
-            gender: row['gender'] as String?),
+            name: row['name'] as String,
+            phone: row['phone'] as String,
+            gender: row['gender'] as String,
+            profilepic: row['profilepic'] as String,
+            age: row['age'] as String,
+            country: row['country'] as String),
         arguments: [email, password]);
   }
 
@@ -438,9 +381,12 @@ class _$UsersDao extends UsersDao {
         mapper: (Map<String, Object?> row) => Users(
             email: row['email'] as String,
             password: row['password'] as String,
-            name: row['name'] as String?,
-            phone: row['phone'] as String?,
-            gender: row['gender'] as String?),
+            name: row['name'] as String,
+            phone: row['phone'] as String,
+            gender: row['gender'] as String,
+            profilepic: row['profilepic'] as String,
+            age: row['age'] as String,
+            country: row['country'] as String),
         arguments: [email]);
   }
 
@@ -454,5 +400,210 @@ class _$UsersDao extends UsersDao {
   @override
   Future<void> insertUser(Users users) async {
     await _usersInsertionAdapter.insert(users, OnConflictStrategy.replace);
+  }
+}
+
+class _$CategoryDao extends CategoryDao {
+  _$CategoryDao(
+    this.database,
+    this.changeListener,
+  )   : _queryAdapter = QueryAdapter(database),
+        _categoryInsertionAdapter = InsertionAdapter(
+            database,
+            'categories',
+            (Category item) =>
+                <String, Object?>{'id': item.id, 'name': item.name});
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<Category> _categoryInsertionAdapter;
+
+  @override
+  Future<List<Category>> getAllCategories() async {
+    return _queryAdapter.queryList('SELECT * FROM categories',
+        mapper: (Map<String, Object?> row) =>
+            Category(row['id'] as int?, row['name'] as String));
+  }
+
+  @override
+  Future<void> insertCategory(Category category) async {
+    await _categoryInsertionAdapter.insert(category, OnConflictStrategy.abort);
+  }
+}
+
+class _$ProductDao extends ProductDao {
+  _$ProductDao(
+    this.database,
+    this.changeListener,
+  )   : _queryAdapter = QueryAdapter(database),
+        _favInsertionAdapter = InsertionAdapter(
+            database,
+            'favorite_items',
+            (Fav item) => <String, Object?>{
+                  'id': item.id,
+                  'productId': item.productId,
+                  'userEmail': item.userEmail
+                }),
+        _cartInsertionAdapter = InsertionAdapter(
+            database,
+            'cart_items',
+            (Cart item) => <String, Object?>{
+                  'id': item.id,
+                  'productId': item.productId,
+                  'quantity': item.quantity,
+                  'userEmail': item.userEmail
+                }),
+        _productInsertionAdapter = InsertionAdapter(
+            database,
+            'products',
+            (Product item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'size': item.size,
+                  'price': item.price,
+                  'discount': item.discount,
+                  'isFavorite': item.isFavorite ? 1 : 0,
+                  'image': item.image,
+                  'isInCart': item.isInCart ? 1 : 0,
+                  'type': item.type,
+                  'description': item.description,
+                  'categoryId': item.categoryId
+                }),
+        _productUpdateAdapter = UpdateAdapter(
+            database,
+            'products',
+            ['id'],
+            (Product item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'size': item.size,
+                  'price': item.price,
+                  'discount': item.discount,
+                  'isFavorite': item.isFavorite ? 1 : 0,
+                  'image': item.image,
+                  'isInCart': item.isInCart ? 1 : 0,
+                  'type': item.type,
+                  'description': item.description,
+                  'categoryId': item.categoryId
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<Fav> _favInsertionAdapter;
+
+  final InsertionAdapter<Cart> _cartInsertionAdapter;
+
+  final InsertionAdapter<Product> _productInsertionAdapter;
+
+  final UpdateAdapter<Product> _productUpdateAdapter;
+
+  @override
+  Future<List<Product>> getAllProducts() async {
+    return _queryAdapter.queryList('SELECT * FROM products',
+        mapper: (Map<String, Object?> row) => Product(
+            title: row['title'] as String,
+            image: row['image'] as String,
+            type: row['type'] as String,
+            description: row['description'] as String,
+            id: row['id'] as int?,
+            size: row['size'] as String,
+            price: row['price'] as double,
+            discount: row['discount'] as double,
+            categoryId: row['categoryId'] as int,
+            isFavorite: (row['isFavorite'] as int) != 0,
+            isInCart: (row['isInCart'] as int) != 0));
+  }
+
+  @override
+  Future<List<Product>> getProductsByCategoryId(int categoryId) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM products WHERE categoryId = ?1',
+        mapper: (Map<String, Object?> row) => Product(
+            title: row['title'] as String,
+            image: row['image'] as String,
+            type: row['type'] as String,
+            description: row['description'] as String,
+            id: row['id'] as int?,
+            size: row['size'] as String,
+            price: row['price'] as double,
+            discount: row['discount'] as double,
+            categoryId: row['categoryId'] as int,
+            isFavorite: (row['isFavorite'] as int) != 0,
+            isInCart: (row['isInCart'] as int) != 0),
+        arguments: [categoryId]);
+  }
+
+  @override
+  Future<Product?> getProductById(int productId) async {
+    return _queryAdapter.query('SELECT * FROM products WHERE id = ?1',
+        mapper: (Map<String, Object?> row) => Product(
+            title: row['title'] as String,
+            image: row['image'] as String,
+            type: row['type'] as String,
+            description: row['description'] as String,
+            id: row['id'] as int?,
+            size: row['size'] as String,
+            price: row['price'] as double,
+            discount: row['discount'] as double,
+            categoryId: row['categoryId'] as int,
+            isFavorite: (row['isFavorite'] as int) != 0,
+            isInCart: (row['isInCart'] as int) != 0),
+        arguments: [productId]);
+  }
+
+  @override
+  Future<bool?> getProductFav() async {
+    return _queryAdapter.query('SELECT isFavorite FROM products',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0);
+  }
+
+  @override
+  Future<List<Product>> getFavoriteProductsForUser(
+    bool isFav,
+    String userEmail,
+  ) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM products WHERE isFavorite = ?1 AND id IN (SELECT productId FROM favorite_items WHERE userEmail = ?2)',
+        mapper: (Map<String, Object?> row) => Product(title: row['title'] as String, image: row['image'] as String, type: row['type'] as String, description: row['description'] as String, id: row['id'] as int?, size: row['size'] as String, price: row['price'] as double, discount: row['discount'] as double, categoryId: row['categoryId'] as int, isFavorite: (row['isFavorite'] as int) != 0, isInCart: (row['isInCart'] as int) != 0),
+        arguments: [isFav ? 1 : 0, userEmail]);
+  }
+
+  @override
+  Future<List<Product>> getCartProductsForUser(
+    bool isInCart,
+    String userEmail,
+  ) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM products WHERE isInCart = ?1 AND id IN (SELECT productId FROM cart_items WHERE userEmail = ?2)',
+        mapper: (Map<String, Object?> row) => Product(title: row['title'] as String, image: row['image'] as String, type: row['type'] as String, description: row['description'] as String, id: row['id'] as int?, size: row['size'] as String, price: row['price'] as double, discount: row['discount'] as double, categoryId: row['categoryId'] as int, isFavorite: (row['isFavorite'] as int) != 0, isInCart: (row['isInCart'] as int) != 0),
+        arguments: [isInCart ? 1 : 0, userEmail]);
+  }
+
+  @override
+  Future<void> addProductToFavorites(Fav favoriteItem) async {
+    await _favInsertionAdapter.insert(favoriteItem, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> addProductToCart(Cart cartItem) async {
+    await _cartInsertionAdapter.insert(cartItem, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> insertProduct(Product product) async {
+    await _productInsertionAdapter.insert(product, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> updateProduct(Product product) async {
+    await _productUpdateAdapter.update(product, OnConflictStrategy.abort);
   }
 }

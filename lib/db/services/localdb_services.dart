@@ -1,18 +1,30 @@
 
 
 
+
+
 import '../dao/cart_dao.dart';
+import '../dao/category_dao.dart';
+
 import '../dao/fav_dao.dart';
+import '../dao/product_dao.dart';
 import '../dao/user_dao.dart';
 import '../database/shop_me_database.dart';
+
 
 abstract class LocalDbService {
   static Future<AppDatabase> get _db async =>
       $FloorAppDatabase.databaseBuilder(AppDatabase.dbName).build();
 
- static Future<CartDao> get cartDao async => (await _db).cartDao;
+static Future<CartDao> get cartDao async => (await _db).cartDao;
   static Future<FavDao> get favDao async => (await _db).favDao;
     static Future<UsersDao> get usersDao async => (await _db).userdao;
+
+
+      static Future<CategoryDao> get categoryDap async => (await _db).categoryDao;
+        static Future<ProductDao> get productDao async => (await _db).productDao;
+
+    
 }
 
 
