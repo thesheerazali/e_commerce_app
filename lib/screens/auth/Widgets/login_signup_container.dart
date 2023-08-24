@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
+import '../../admin/add_product.dart';
 import '../screens/login_screen.dart';
-import '../screens/signup_screen.dart';
+
 
 class LoginSignUpContainer extends StatelessWidget {
   const LoginSignUpContainer({super.key});
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +16,11 @@ class LoginSignUpContainer extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           InkWell(
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen(),)),
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginScreen(),
+                )),
             child: Container(
               height: 50.h,
               width: 120.w,
@@ -27,7 +29,7 @@ class LoginSignUpContainer extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12)),
               child: Center(
                 child: Text(
-                  "Login",
+                  "User",
                   style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.bold,
@@ -40,7 +42,11 @@ class LoginSignUpContainer extends StatelessWidget {
             width: 10.w,
           ),
           InkWell(
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder:(context) => const SignUpScreen(),)),
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddProductScreen(),
+                )),
             child: Container(
               height: 50.h,
               width: 120.w,
@@ -49,7 +55,7 @@ class LoginSignUpContainer extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12)),
               child: Center(
                 child: Text(
-                  "Sign Up",
+                  "Admin",
                   style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.bold,

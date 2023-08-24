@@ -22,7 +22,7 @@ class _AdsContainerState extends State<AdsContainer> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             image: const DecorationImage(
-                image: AssetImage("assets/main/images/adspic.jpeg"),
+                image: AssetImage("assets/images/adspic.jpeg"),
                 fit: BoxFit.cover),
           ),
         ),

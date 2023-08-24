@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-
 class FavPageAppBar extends StatefulWidget {
+  final String title;
   const FavPageAppBar({
     super.key,
+    required this.title,
   });
 
   @override
@@ -27,8 +28,8 @@ class _FavPageAppBarState extends State<FavPageAppBar> {
             icon: const Icon(Icons.arrow_back),
           ),
         ),
-        const Text(
-          "Favorite Items",
+        Text(
+          widget.title,
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
         Container(

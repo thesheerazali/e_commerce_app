@@ -1,14 +1,14 @@
+import 'package:e_commerce_app/screens/auth/screens/signup_screen.dart';
 
-
-import 'package:e_commerce_app/provider/local_db_fav_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import '../../../db/entity/users.dart';
+
 import '../../../db/services/localdb_services.dart';
 import '../../../main.dart';
+import '../../../provider/text_field_controller_provider.dart';
 import '../Widgets/email_password_textfield.dart';
 import '../Widgets/google_facebook_signup_buttons.dart';
 
@@ -20,16 +20,15 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  // final TextEditingController emailController = TextEditingController();
-  // final TextEditingController passwordController = TextEditingController();
   String loginStatus = '';
 
   void _login(context) async {
     var emailController =
-        Provider.of<LocalDBFavProvider>(context, listen: false).emailController;
+        Provider.of<TextFieldsControllers>(context, listen: false)
+            .emailControllerForLogin;
     var passwordController =
-        Provider.of<LocalDBFavProvider>(context, listen: false)
-            .passwordController;
+        Provider.of<TextFieldsControllers>(context, listen: false)
+            .passwordControllerForLogin;
     var email = emailController.text;
     var pass = passwordController.text;
     final user = await (await LocalDbService.usersDao)
@@ -45,51 +44,24 @@ class _LoginScreenState extends State<LoginScreen> {
               builder: (context) => const MainPage(),
             ));
       });
-     
+
       // Fetch user-specific data using user.id if needed
     } else {
       setState(() {
         loginStatus = 'Invalid login credentials';
         snakeBar(context, loginStatus);
       });
-    
-    }
-  }
-
-  void _signUp(context) async {
-    var emailController =
-        Provider.of<LocalDBFavProvider>(context, listen: false).emailController;
-    var passwordController =
-        Provider.of<LocalDBFavProvider>(context, listen: false)
-            .passwordController;
-    var existUser = await (await LocalDbService.usersDao)
-        .getUserByEmailPassword(emailController.text, passwordController.text);
-
-    if (existUser?.email == emailController.text) {
-      // ignore: use_build_context_synchronously
-      snakeBar(context, "You are already SignIn");
-      debugPrint("You are already SignIn");
-    } else {
-      final userData = Users(
-          email: emailController.text,
-          password: passwordController.text,
-          name: "sheeraz",
-          phone: "89365",
-          gender: "male");
-      await (await LocalDbService.usersDao).insertUser(userData);
-      // ignore: use_build_context_synchronously
-      snakeBar(context, "Signup Successfull");
-      debugPrint("Signup Successfull");
     }
   }
 
   @override
   Widget build(BuildContext context) {
     var emailController =
-        Provider.of<LocalDBFavProvider>(context, listen: false).emailController;
+        Provider.of<TextFieldsControllers>(context, listen: false)
+            .emailControllerForLogin;
     var passwordController =
-        Provider.of<LocalDBFavProvider>(context, listen: false)
-            .passwordController;
+        Provider.of<TextFieldsControllers>(context, listen: false)
+            .passwordControllerForLogin;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -207,7 +179,12 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             InkWell(
               onTap: () {
-                _signUp(context);
+                // _signUp(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SignUpScreen(),
+                    ));
               },
               child: Container(
                 height: 50.h,
@@ -217,16 +194,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Colors.white,
                 ),
                 child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.apple),
-                      Text(
-                        "Sign in With Apple",
-                        style: GoogleFonts.lato(
-                            fontSize: 14.sp, fontWeight: FontWeight.bold),
-                      ),
-                    ],
+                  child: Text(
+                    "Sign Up?",
+                    style: GoogleFonts.lato(
+                        fontSize: 14.sp, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),

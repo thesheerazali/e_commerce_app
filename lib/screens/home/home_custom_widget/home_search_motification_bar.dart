@@ -1,6 +1,7 @@
+
 import 'package:flutter/material.dart';
 
-import '../../favorite/fav_screen.dart';
+import '../../notifucation/notification_screen.dart';
 
 class SearchNotifBar extends StatefulWidget {
   const SearchNotifBar({
@@ -33,7 +34,7 @@ class _SearchNotifBarState extends State<SearchNotifBar> {
                   fillColor: const Color.fromARGB(255, 231, 228, 228),
                   filled: true,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-                  hintText: "Search Country Name",
+                  hintText: "Search Any Product",
                   hintStyle: const TextStyle(
                     color: Colors.black,
                   ),
@@ -55,11 +56,11 @@ class _SearchNotifBarState extends State<SearchNotifBar> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const FavScreen(),
+                          builder: (context) => const NotificationScreen(),
                         ));
                   },
                   icon: const Icon(
-                    Icons.favorite_sharp,
+                    Icons.notification_add_outlined,
                   )),
             ),
           )
