@@ -6,16 +6,23 @@ class Users {
   final String email;
 
   final String password;
-  final String? name;
-  final String? phone;
-  final String? gender;
+  final String name;
+  final String phone;
+  final String gender;
+  final String profilepic;
+  final String age;
+  final String country;
 
   Users(
       {required this.email,
       required this.password,
       required this.name,
       required this.phone,
-      required this.gender});
+      required this.gender,
+      required this.profilepic, 
+      required this.age,
+      required this.country
+      });
 }
 
 // import 'package:flutter/material.dart';
